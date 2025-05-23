@@ -19,7 +19,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="index.jsp">
             <img src="Estetica/img/logo.jpg" alt="Compunet Perú" style="height: 40px;">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
@@ -63,7 +63,7 @@
 <section class="py-5">
     <div class="container">
         <h3 class="mb-4">Productos Destacados</h3>
-        <div id="carouselProductos" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselProductos" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-inner">
                 <!-- Primer grupo de productos -->
                 <div class="carousel-item active">

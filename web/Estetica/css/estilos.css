@@ -139,6 +139,38 @@ body {
     background-color: var(--gris-claro);
 }
 
+/* Catálogo */
+#vista-grid .card-img-top,
+#vista-lista img {
+    height: 200px;
+    object-fit: contain;
+    background-color: #fff;
+    padding: 10px;
+}
+
+#vista-lista .card {
+    border: 1px solid #ddd;
+    transition: box-shadow 0.3s ease;
+}
+#vista-lista .card:hover {
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+}
+
+aside select,
+aside input[type=range] {
+    font-size: 0.9rem;
+}
+
+/* Paginación activa */
+.pagination .page-link {
+    color: var(--negro);
+}
+.pagination .page-item.active .page-link {
+    background-color: var(--verde-compunet);
+    border-color: var(--verde-compunet);
+    color: var(--negro);
+}
+
 /* Footer */
 .footer-compunet {
     background-color: #2C2C2C;
@@ -192,4 +224,3 @@ body {
 #carouselProductos .carousel-control-next {
     display: none;
 }
-
