@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <title>Compunet Perú - Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Íconos Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <!-- Tu CSS personalizado -->
     <link rel="stylesheet" href="Estetica/css/estilos.css">
 </head>
 <body>
@@ -205,7 +202,7 @@
     </div>
 </section>
 
-<!-- Sección: Beneficios del servicio -->
+<!-- Beneficios del servicio -->
 <section class="py-5 text-center">
     <div class="container">
         <div class="row g-4">
@@ -228,7 +225,7 @@
     </div>
 </section>
 
-<!-- Sección: Marcas destacadas -->
+<!-- Marcas destacadas -->
 <section class="py-5 bg-light">
     <div class="container text-center">
         <h4 class="mb-4">Nuestras Marcas</h4>
@@ -300,7 +297,7 @@
     </div>
 </footer>
 
-<!-- Scripts de Bootstrap -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
