@@ -1,0 +1,195 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #000000;
+    --gris-claro: #F4F4F4;
+    --blanco: #FFFFFF;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--negro);
+}
+.navbar .nav-link,
+.navbar-brand {
+    color: var(--negro) !important;
+}
+.navbar .nav-link:hover {
+    color: var(--verde-compunet) !important;
+    font-weight: bold;
+}
+
+/* Topbar */
+.topbar {
+    background-color: var(--negro);
+    color: var(--blanco);
+    font-size: 0.85rem;
+}
+
+/* Tarjetas dentro del carrusel */
+.carousel-item .card {
+    height: 100%;
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.carousel-item .card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Imágenes en tarjetas */
+.carousel-item .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+}
+
+/* Controladores del carrusel */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+
+/* Espacio entre tarjetas */
+.carousel .col-md-3 {
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .carousel .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel .col-md-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* Botones */
+.btn-verde {
+    background-color: var(--verde-compunet);
+    color: var(--negro);
+    border: none;
+}
+.btn-verde:hover {
+    background-color: var(--verde-hover);
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5 {
+    color: var(--negro);
+}
+
+/* Logos de marcas */
+.logo-marca {
+    max-width: 100px;
+    height: 50px;
+    display: block;
+    margin: 0 auto;
+    filter: grayscale(100%);
+    opacity: 0.8;
+    transition: all 0.3s ease-in-out;
+}
+.logo-marca:hover {
+    filter: none;
+    opacity: 1;
+}
+
+/* Footer */
+footer {
+    background-color: var(--negro);
+    color: var(--blanco);
+    font-size: 0.9rem;
+}
+footer a {
+    color: var(--verde-compunet);
+    text-decoration: none;
+}
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Tarjetas */
+.card {
+    border: 1px solid #e0e0e0;
+    transition: transform 0.2s ease;
+}
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* Carrusel */
+.carousel-item img {
+    max-height: 450px;
+    object-fit: cover;
+}
+
+/* General */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--gris-claro);
+}
+
+/* Footer */
+.footer-compunet {
+    background-color: #2C2C2C;
+    border-top: 4px solid #AED136;
+}
+.footer-compunet h5 {
+    color: #AED136;
+    font-weight: bold;
+}
+.footer-compunet p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+.footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+    display: inline-block;
+}
+.footer-link:hover {
+    color: #AED136;
+}
+.footer-compunet .social-icon {
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.footer-compunet .social-icon:hover {
+    transform: scale(1.2);
+    color: #AED136 !important;
+}
+.reclamaciones-link {
+    transition: transform 0.2s ease;
+}
+.reclamaciones-link:hover {
+    transform: scale(1.05);
+}
+.reclamaciones-icon {
+    height: 85px;
+    width: auto;
+}
+.footer-divider {
+    border-top: 1px solid #555;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.footer-copyright {
+    color: #ccc;
+    font-size: 0.85rem;
+}
+
+#carouselProductos .carousel-control-prev,
+#carouselProductos .carousel-control-next {
+    display: none;
+}
+
