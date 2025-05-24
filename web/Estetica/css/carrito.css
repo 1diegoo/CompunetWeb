@@ -1,0 +1,59 @@
+/* Ajustes generales */
+.table td, .table th {
+    vertical-align: middle;
+}
+
+/* Imagen del producto */
+.img-thumbnail {
+    max-width: 80px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Grupo de cantidad */
+.input-group {
+    width: 100px;
+}
+
+.input-group .form-control {
+    padding: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.input-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* Botones */
+.btn-verde {
+    background-color: #AED136;
+    color: #000;
+    font-weight: 600;
+    border: none;
+}
+
+.btn-verde:hover {
+    background-color: #98b72b;
+}
+
+/* Tarjeta del resumen */
+.card {
+    border-radius: 0.5rem;
+    border: 1px solid #e0e0e0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .input-group {
+        width: 100%;
+    }
+
+    .table td, .table th {
+        font-size: 0.85rem;
+    }
+
+    .img-thumbnail {
+        max-width: 60px;
+    }
+}

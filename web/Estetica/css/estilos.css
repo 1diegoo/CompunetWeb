@@ -224,3 +224,27 @@ aside input[type=range] {
 #carouselProductos .carousel-control-next {
     display: none;
 }
+
+/* Productos relacionados*/
+.producto-relacionado .card {
+    border: 1px solid #ddd;
+    transition: transform 0.2s ease;
+    height: 100%;
+}
+.producto-relacionado .card:hover {
+    transform: scale(1.02);
+}
+.producto-relacionado .card-img-top {
+    height: 160px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+}
+.producto-relacionado .card-title {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+.producto-relacionado .btn {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.75rem;
+}

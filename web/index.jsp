@@ -34,7 +34,12 @@
                 <li class="nav-item"><a class="nav-link" href="contactenos.jsp">Contáctenos</a></li>
             </ul>
             <div class="d-flex">
-                <a href="#" class="btn btn-outline-secondary me-2"><i class="bi bi-cart"></i></a>
+                <a href="carrito.jsp" class="btn btn-outline-secondary position-relative me-2">
+                    <i class="bi bi-cart"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                        2
+                    </span>
+                </a>
                 <a href="#" class="btn btn-outline-secondary"><i class="bi bi-person"></i></a>
             </div>
         </div>

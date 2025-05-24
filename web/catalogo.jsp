@@ -39,7 +39,12 @@
                 <li class="nav-item"><a class="nav-link" href="contactenos.jsp">Contáctenos</a></li>
             </ul>
             <div class="d-flex">
-                <a href="#" class="btn btn-outline-secondary me-2"><i class="bi bi-cart"></i></a>
+                <a href="carrito.jsp" class="btn btn-outline-secondary position-relative me-2">
+                    <i class="bi bi-cart"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                        2
+                    </span>
+                </a>
                 <a href="#" class="btn btn-outline-secondary"><i class="bi bi-person"></i></a>
             </div>
         </div>
@@ -146,12 +151,18 @@
                     <div class="card producto-card h-100 position-relative">
                         <!-- Etiqueta stock -->
                         <img src="Estetica/img/Placeholder 1.png" class="etiqueta-stock" alt="In Stock">
-                        <img src="Estetica/img/laptop1.jpg" class="card-img-top" alt="Laptop Lenovo">
+                        <a href="producto.jsp?id=1">
+                            <img src="Estetica/img/laptop1.jpg" class="card-img-top" alt="Laptop Lenovo">
+                        </a>
                         <div class="card-body">
+                        <a href="producto.jsp?id=1" class="text-decoration-none text-dark">
                             <h5 class="card-title">Laptop Lenovo</h5>
+                        </a>
                             <p class="card-text">Core i5, 8GB RAM, 256GB SSD</p>
                             <div class="fw-bold text-primary mb-2">S/ 1899.00</div>
-                            <button class="btn btn-verde w-100">Agregar al carrito</button>
+                            <button class="btn btn-verde w-100" 
+                                    onclick="window.location.href='carrito.jsp'">Agregar al carrito
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -165,14 +176,19 @@
                     <img src="Estetica/img/Placeholder 2.png" class="etiqueta-stock-lista" alt="Check Availability">
                     <div class="row g-0">
                         <div class="col-md-4">
+                        <a href="producto.jsp?id=1">
                             <img src="Estetica/img/laptop1.jpg" class="img-fluid rounded-start" alt="Producto">
+                        </a>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">Laptop Lenovo</h5>
+                                <a href="producto.jsp?id=1" class="text-decoration-none text-dark">
+                                    <h5 class="card-title">Laptop Lenovo</h5>
+                                </a>
                                 <p class="card-text">Pantalla 15.6", Core i5, 8GB RAM, 256GB SSD</p>
                                 <div class="fw-bold text-primary mb-3">S/ 1899.00</div>
-                                <button class="btn btn-verde">Agregar al carrito</button>
+                                <button class="btn btn-verde" onclick="window.location.href='carrito.jsp'">
+                                    Agregar al carrito</button>
                             </div>
                         </div>
                     </div>
