@@ -41,7 +41,18 @@
                         2
                     </span>
                 </a>
-                <a href="#" class="btn btn-outline-secondary"><i class="bi bi-person"></i></a>
+                <!-- Menu de usuario -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="login.jsp"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+                        <li><a class="dropdown-item" href="registro.jsp"><i class="bi bi-person-plus me-2"></i>Crear cuenta</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-info-circle me-2"></i>Mi cuenta (inactivo)</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -114,8 +125,8 @@
                     <span>Total:</span>
                     <span>S/ 1899.00</span>
                 </div>
-                <button class="btn btn-verde w-100 mt-3" onclick="window.location.href='checkout.jsp'">
-                    <i class="bi bi-credit-card me-2"></i> Finalizar Compra
+                <button class="btn btn-verde w-100 mt-3" onclick="window.location.href='datos.jsp'">
+                    <i class="bi bi-credit-card me-2"></i> Continuar Compra
                 </button>
             </div>
         </div>

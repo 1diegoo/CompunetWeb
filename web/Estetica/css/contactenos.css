@@ -1,0 +1,87 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #000000;
+    --gris-claro: #F4F4F4;
+    --blanco: #FFFFFF;
+}
+
+/* Título principal */
+.titulo-seccion {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--negro);
+    border-left: 6px solid var(--verde-compunet);
+    padding-left: 12px;
+    margin-bottom: 2rem;
+}
+
+/* Subtítulos */
+.subtitulo-seccion {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--verde-compunet);
+    border-left: 4px solid var(--verde-compunet);
+    padding-left: 10px;
+    margin-bottom: 1.25rem;
+}
+
+/* Íconos de Bootstrap */
+.bi {
+    vertical-align: middle;
+    font-size: 1.1rem;
+}
+
+/* Enlaces de WhatsApp */
+a[href*="wa.me"] {
+    color: var(--verde-compunet);
+    font-weight: 500;
+    text-decoration: none;
+}
+a[href*="wa.me"]:hover {
+    text-decoration: underline;
+}
+
+/* Imágenes de locales */
+.img-fluid {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.img-fluid:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Mapas responsivos */
+.ratio iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 10px;
+}
+
+/* Espaciado entre secciones */
+section {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 2.5rem;
+}
+
+/* Última sección sin borde */
+section:last-of-type {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+
+    .subtitulo-seccion {
+        font-size: 1.2rem;
+    }
+
+    .img-fluid {
+        margin-bottom: 1rem;
+    }
+}

@@ -1,13 +1,15 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle del Producto - Compunet Perú</title>
+    <title>Compunet Perú - Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/css/lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Estetica/css/estilos.css">
+    <link rel="stylesheet" href="Estetica/css/nosotros.css">
 </head>
 <body>
 
@@ -27,8 +29,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="index.jsp">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link active" href="catalogo.jsp">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link active" href="index.jsp">Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.jsp">Catálogo</a></li>
                 <li class="nav-item"><a class="nav-link" href="servicios.jsp">Servicios</a></li>
                 <li class="nav-item"><a class="nav-link" href="nosotros.jsp">Nosotros</a></li>
                 <li class="nav-item"><a class="nav-link" href="contactenos.jsp">Contáctenos</a></li>
@@ -57,97 +59,111 @@
     </div>
 </nav>
 
-<!-- Producto -->
+<!-- Cuerpo -->
 <div class="container py-5">
-    <div class="row">
-        <div class="col-lg-6 text-center mb-4 mb-lg-0">
-            <img src="Estetica/img/laptop1.jpg" class="img-fluid rounded shadow-sm" alt="Laptop Lenovo">
-        </div>
+    <h2 class="titulo-seccion mb-5">Nosotros</h2>
 
-        <!-- Detalles -->
-        <div class="col-lg-6">
-            <h1 class="mb-3">Laptop Lenovo i5</h1>
-            <p class="text-muted">SKU: D5515AI</p>
-            <p><strong>Marca:</strong> Lenovo</p>
-            <p><strong>Disponibilidad:</strong> En stock</p>
-            <h4 class="text-success fw-bold">S/ 1899.00</h4>
-            <p>Notebook con procesador Intel Core i5, 8GB RAM y disco sólido de 256GB. Perfecta para estudios, oficina o navegación diaria.</p>
-
-            <!-- Cantidad -->
-            <div class="d-flex align-items-center mb-3">
-                <span class="me-2">Cantidad:</span>
-                <div class="input-group" style="width: 120px;">
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(-1)">-</button>
-                    <input type="text" id="cantidad" class="form-control text-center" value="1" readonly>
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(1)">+</button>
+    <!-- Misión y Visión -->
+    <section class="mb-5">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card p-4 h-100 border-0 sombra-verde">
+                    <h5 class="mb-3">Misión</h5>
+                    <p>Ofrecer productos y servicios tecnológicos de calidad, accesibles para todos los peruanos, con atención personalizada y soporte técnico confiable.</p>
                 </div>
             </div>
-
-            <!-- Botones -->
-            <div class="d-flex gap-2">
-                <button class="btn btn-verde flex-fill">
-                    <i class="bi bi-cart-plus me-2"></i> Agregar al carrito
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Productos Relacionados -->
-<div class="container mt-5 producto-relacionado">
-    <h4 class="mb-4">Productos Relacionados</h4>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/ssd1.jpg" class="card-img-top" alt="SSD Kingston">
-                <div class="card-body text-center">
-                    <h5 class="card-title">SSD Kingston 480GB</h5>
-                    <p class="fw-bold text-success mb-2">S/ 189.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+            <div class="col-md-6">
+                <div class="card p-4 h-100 border-0 sombra-verde">
+                    <h5 class="mb-3">Visión</h5>
+                    <p>Ser la empresa líder en tecnología en el sur del país, reconocida por su innovación, responsabilidad y compromiso con el cliente.</p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/laptop2.webp" class="card-img-top" alt="Laptop HP">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Laptop HP Ryzen 5</h5>
-                    <p class="fw-bold text-success mb-2">S/ 2150.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+    </section>
+
+    <!-- Filosofía / frases -->
+    <section class="mb-5">
+        <div class="row text-center">
+            <div class="col-md-6 mb-3">
+                <div class="frase-box p-4 shadow-sm rounded">
+                    <h5 class="mb-2">Tecnología al alcance de todos</h5>
+                    <p class="small text-muted">Brindamos soluciones accesibles sin comprometer calidad.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="frase-box p-4 shadow-sm rounded">
+                    <h5 class="mb-2">Comprometidos con tu confianza</h5>
+                    <p class="small text-muted">Nuestro mayor logro es tu recomendación.</p>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/combo1.webp" class="card-img-top" alt="Combo XBlade">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Combo XBLADE</h5>
-                    <p class="fw-bold text-success mb-2">S/ 229.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
-                </div>
+    </section>
+
+    <!-- Galería de imágenes generales (clientes, tienda, productos) -->
+    <section>
+        <h4 class="subtitulo-seccion d-flex align-items-center mb-4">
+            <span class="barra-verde me-2"></span> 
+            <span>Galería de Nuestra Historia</span>
+        </h4>
+        <div class="row g-3 galeria-nosotros">
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria1.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria1.webp" class="nosotros-img mb-2" alt="Galería 1">
+                </a>
             </div>
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria2.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria2.webp" class="nosotros-img mb-2" alt="Galería 2">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria3.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria3.webp" class="nosotros-img mb-2" alt="Galería 3">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria4.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria4.webp" class="nosotros-img mb-2" alt="Galería 4">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria5.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria5.webp" class="nosotros-img mb-2" alt="Galería 5">
+                </a>
+            </div>
+            <div class="col-sm-6 col-md-4">
+                <a href="Estetica/img/galeria6.webp" data-lightbox="galeria">
+                    <img src="Estetica/img/galeria6.webp" class="nosotros-img mb-2" alt="Galería 6">
+                </a>
+            </div>
+
         </div>
-    </div>
+    </section>
 </div>
 
 <!-- Footer -->
 <footer class="footer-compunet text-white pt-4 mt-5">
     <div class="container">
         <div class="row text-center text-md-start">
+            <!-- Columna izquierda: Información de contacto -->
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
                     <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-geo-alt-fill me-2"></i> Jr. 2 de Mayo N° 475 - Imperial<br>
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        Jr. 2 de Mayo N° 475 - Imperial<br>
                         (a 1/2 cuadra Plaza Armas)
                     </a>
                 </p>
                 <p>
-                    <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-whatsapp me-2"></i> 926052866 - 900955495
+                    <a href="#contactenos" class="footer-link">
+                        <i class="bi bi-whatsapp me-2"></i>
+                        926052866 - 900955495
                     </a>
                 </p>
             </div>
+
+            <!-- Columna central: Redes sociales -->
             <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center">
                 <h5>Síguenos</h5>
                 <div class="d-flex gap-3">
@@ -155,6 +171,8 @@
                     <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-instagram"></i></a>
                 </div>
             </div>
+
+            <!-- Columna derecha: Libro de reclamaciones -->
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
                 <a href="#" class="reclamaciones-link d-inline-block mt-2">
@@ -173,14 +191,6 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-function cambiarCantidad(valor) {
-    const input = document.getElementById("cantidad");
-    let actual = parseInt(input.value);
-    if (actual + valor >= 1) {
-        input.value = actual + valor;
-    }
-}
-</script>
+<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox-plus-jquery.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,110 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #000000;
+    --gris-claro: #F4F4F4;
+    --blanco: #FFFFFF;
+}
+
+/* Título principal */
+.titulo-seccion {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--negro);
+    border-left: 6px solid var(--verde-compunet);
+    padding-left: 10px;
+}
+
+/* Subtítulo de cada servicio */
+.subtitulo-seccion {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--verde-compunet);
+    display: flex;
+    align-items: center;
+}
+
+/* Barra visual al lado del título */
+.barra-verde {
+    width: 6px;
+    height: 100%;
+    background-color: var(--verde-compunet);
+    display: inline-block;
+    height: 1.5rem;
+    border-radius: 3px;
+}
+
+/* Tarjetas de equipos incluidos (Internet) */
+.equipos-internet .equipo-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: var(--blanco);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+.equipos-internet .equipo-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.equipo-icono {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+/* Galería de cámaras de seguridad */
+.galeria-img {
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.galeria-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Soporte técnico */
+section img {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.soporte-img {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Galería */
+#carouselCamaras .carousel-item {
+    padding-bottom: 10px;
+}
+
+#carouselCamaras img {
+    height: 220px;
+    object-fit: cover;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+#carouselCamaras img:hover {
+    transform: scale(1.02);
+}
+
+#carouselCamaras .carousel-control-prev,
+#carouselCamaras .carousel-control-next {
+    display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+    .subtitulo-seccion {
+        font-size: 1.2rem;
+    }
+}
+

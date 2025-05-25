@@ -248,3 +248,10 @@ aside input[type=range] {
     font-size: 0.9rem;
     padding: 0.3rem 0.75rem;
 }
+
+.dropdown-menu a {
+    font-size: 0.95rem;
+}
+.dropdown-menu .dropdown-item i {
+    font-size: 1rem;
+}

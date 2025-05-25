@@ -1,0 +1,36 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #2c2c2c;
+}
+
+/* Tarjetas del panel */
+.admin-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 35px 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    color: #333;
+    display: block;
+}
+.admin-card:hover {
+    background-color: var(--verde-compunet);
+    color: #000;
+    transform: translateY(-4px);
+    text-decoration: none;
+}
+.admin-card i {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+.admin-card h6 {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Encabezado navbar */
+.navbar-brand {
+    font-size: 1.1rem;
+}

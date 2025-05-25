@@ -40,7 +40,18 @@
                         2
                     </span>
                 </a>
-                <a href="#" class="btn btn-outline-secondary"><i class="bi bi-person"></i></a>
+                <!-- Menu de usuario -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="login.jsp"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+                        <li><a class="dropdown-item" href="registro.jsp"><i class="bi bi-person-plus me-2"></i>Crear cuenta</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-info-circle me-2"></i>Mi cuenta (inactivo)</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -54,6 +65,9 @@
         </div>
         <div class="carousel-item">
             <img src="Estetica/img/banner2.jpg" class="d-block w-100" alt="Banner 2">
+        </div>
+        <div class="carousel-item">
+            <img src="Estetica/img/banner3.jpg" class="d-block w-100" alt="Banner 3">
         </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
@@ -95,9 +109,9 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/combo1.jpg" class="card-img-top" alt="Combo 1">
+                                <img src="Estetica/img/combo1.webp" class="card-img-top" alt="Combo 1">
                                 <div class="card-body">
-                                    <h5 class="card-title">Combo Redragon</h5>
+                                    <h5 class="card-title">Combo XBlade</h5>
                                     <p>Teclado + Mouse + Audífonos</p>
                                     <strong>S/ 229.00</strong>
                                 </div>
@@ -105,7 +119,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/tablet1.jpg" class="card-img-top" alt="Tablet">
+                                <img src="Estetica/img/tablet1.webp" class="card-img-top" alt="Tablet">
                                 <div class="card-body">
                                     <h5 class="card-title">Tablet Lenovo</h5>
                                     <p>10.1" Android 11</p>
@@ -121,7 +135,7 @@
                     <div class="row g-4">
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/laptop2.jpg" class="card-img-top" alt="Laptop HP">
+                                <img src="Estetica/img/laptop2.webp" class="card-img-top" alt="Laptop HP">
                                 <div class="card-body">
                                     <h5 class="card-title">Laptop HP Ryzen 5</h5>
                                     <p>8GB RAM, 512GB SSD</p>
@@ -131,7 +145,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/impresora1.jpg" class="card-img-top" alt="Impresora">
+                                <img src="Estetica/img/impresora1.webp" class="card-img-top" alt="Impresora">
                                 <div class="card-body">
                                     <h5 class="card-title">Impresora Epson L3210</h5>
                                     <p>Multifunción Ecotank</p>
@@ -141,7 +155,7 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/ssd2.jpg" class="card-img-top" alt="SSD Gigabyte">
+                                <img src="Estetica/img/ssd2.webp" class="card-img-top" alt="SSD Gigabyte">
                                 <div class="card-body">
                                     <h5 class="card-title">SSD Gigabyte 240GB</h5>
                                     <p>Rápido y confiable</p>
@@ -151,9 +165,9 @@
                         </div>
                         <div class="col-md-3">
                             <div class="card h-100">
-                                <img src="Estetica/img/combo2.jpg" class="card-img-top" alt="Combo HP">
+                                <img src="Estetica/img/combo2.webp" class="card-img-top" alt="Combo 2">
                                 <div class="card-body">
-                                    <h5 class="card-title">Combo Gamer HP</h5>
+                                    <h5 class="card-title">Combo Halion</h5>
                                     <p>Teclado, Mouse, Mousepad</p>
                                     <strong>S/ 199.00</strong>
                                 </div>
@@ -262,14 +276,14 @@
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
-                    <a href="#contactenos" class="footer-link">
+                    <a href="contactenos.jsp" class="footer-link">
                         <i class="bi bi-geo-alt-fill me-2"></i>
                         Jr. 2 de Mayo N° 475 - Imperial<br>
                         (a 1/2 cuadra Plaza Armas)
                     </a>
                 </p>
                 <p>
-                    <a href="#contactenos" class="footer-link">
+                    <a href="#" class="footer-link">
                         <i class="bi bi-whatsapp me-2"></i>
                         926052866 - 900955495
                     </a>

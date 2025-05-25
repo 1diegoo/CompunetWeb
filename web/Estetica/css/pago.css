@@ -1,0 +1,113 @@
+/* Estilo general del formulario */
+.card {
+    border: none;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+/* Indicador de pasos */
+.checkout-steps {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.checkout-steps .step {
+    position: relative;
+    padding-left: 20px;
+    color: #aaa;
+}
+.checkout-steps .step.active {
+    color: #000;
+}
+.checkout-steps .step.active::before {
+    content: "✔";
+    position: absolute;
+    left: 0;
+    top: 1px;
+    color: var(--verde-compunet);
+    font-size: 0.9rem;
+}
+
+/* Inputs */
+input.form-control,
+textarea.form-control,
+select.form-select {
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+/* Radios */
+.form-check-input:checked {
+    background-color: var(--verde-compunet);
+    border-color: var(--verde-compunet);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.15rem rgba(174, 209, 54, 0.5);
+}
+
+/* Íconos de métodos de pago */
+.form-check-label i {
+    color: #4b4b4b;
+    margin-right: 6px;
+}
+
+/* Resumen del carrito */
+.img-thumbnail {
+    object-fit: contain;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    padding: 4px;
+    width: 70px;
+    height: 70px;
+}
+
+.resumen-productos {
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 8px;
+}
+
+.resumen-productos p {
+    margin-bottom: 4px;
+}
+
+.resumen-productos h5 {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Botón principal */
+.btn-verde {
+    background-color: var(--verde-compunet);
+    color: #000;
+    font-weight: 600;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+.btn-verde:hover {
+    background-color: var(--verde-hover);
+    color: #000;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .checkout-steps {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .resumen-productos {
+        margin-top: 30px;
+    }
+
+    .btn-verde {
+        width: 100%;
+    }
+}

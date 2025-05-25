@@ -1,0 +1,73 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #000000;
+    --gris-claro: #F4F4F4;
+    --blanco: #FFFFFF;
+}
+
+/* Título principal */
+.titulo-seccion {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--negro);
+    border-left: 6px solid var(--verde-compunet);
+    padding-left: 10px;
+}
+
+/* Subtítulos con barra visual */
+.subtitulo-seccion {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--verde-compunet);
+    display: flex;
+    align-items: center;
+}
+
+.barra-verde {
+    width: 6px;
+    height: 100%;
+    background-color: var(--verde-compunet);
+    display: inline-block;
+    height: 1.5rem;
+    border-radius: 3px;
+}
+
+/* Tarjetas de misión/visión */
+.sombra-verde {
+    box-shadow: 0 2px 8px rgba(174, 209, 54, 0.3);
+    background-color: var(--blanco);
+    border-left: 5px solid var(--verde-compunet);
+}
+
+/* Frases de filosofía */
+.frase-box {
+    background-color: #f8f9fa;
+    border-left: 4px solid var(--verde-compunet);
+    transition: transform 0.2s ease;
+}
+.frase-box:hover {
+    transform: scale(1.02);
+}
+
+/* Galería de imágenes */
+.nosotros-img {
+    height: 220px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .titulo-seccion {
+        font-size: 1.6rem;
+    }
+    .subtitulo-seccion {
+        font-size: 1.2rem;
+    }
+    .frase-box {
+        font-size: 0.95rem;
+    }
+}

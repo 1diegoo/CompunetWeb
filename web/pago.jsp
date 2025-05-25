@@ -3,11 +3,12 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Detalle del Producto - Compunet Perú</title>
+    <title>Pago - Compunet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="Estetica/css/estilos.css">
+    <link rel="stylesheet" href="Estetica/css/pago.css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="index.jsp">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link active" href="catalogo.jsp">Catálogo</a></li>
+                <li class="nav-item"><a class="nav-link" href="catalogo.jsp">Catálogo</a></li>
                 <li class="nav-item"><a class="nav-link" href="servicios.jsp">Servicios</a></li>
                 <li class="nav-item"><a class="nav-link" href="nosotros.jsp">Nosotros</a></li>
                 <li class="nav-item"><a class="nav-link" href="contactenos.jsp">Contáctenos</a></li>
@@ -36,9 +37,7 @@
             <div class="d-flex">
                 <a href="carrito.jsp" class="btn btn-outline-secondary position-relative me-2">
                     <i class="bi bi-cart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
-                        2
-                    </span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">2</span>
                 </a>
                 <!-- Menu de usuario -->
                 <div class="dropdown">
@@ -57,74 +56,83 @@
     </div>
 </nav>
 
-<!-- Producto -->
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-6 text-center mb-4 mb-lg-0">
-            <img src="Estetica/img/laptop1.jpg" class="img-fluid rounded shadow-sm" alt="Laptop Lenovo">
-        </div>
-
-        <!-- Detalles -->
-        <div class="col-lg-6">
-            <h1 class="mb-3">Laptop Lenovo i5</h1>
-            <p class="text-muted">SKU: D5515AI</p>
-            <p><strong>Marca:</strong> Lenovo</p>
-            <p><strong>Disponibilidad:</strong> En stock</p>
-            <h4 class="text-success fw-bold">S/ 1899.00</h4>
-            <p>Notebook con procesador Intel Core i5, 8GB RAM y disco sólido de 256GB. Perfecta para estudios, oficina o navegación diaria.</p>
-
-            <!-- Cantidad -->
-            <div class="d-flex align-items-center mb-3">
-                <span class="me-2">Cantidad:</span>
-                <div class="input-group" style="width: 120px;">
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(-1)">-</button>
-                    <input type="text" id="cantidad" class="form-control text-center" value="1" readonly>
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(1)">+</button>
-                </div>
-            </div>
-
-            <!-- Botones -->
-            <div class="d-flex gap-2">
-                <button class="btn btn-verde flex-fill">
-                    <i class="bi bi-cart-plus me-2"></i> Agregar al carrito
-                </button>
-            </div>
-        </div>
+<!-- CONTENIDO -->
+<div class="container my-5">
+    <!-- Indicador de pasos -->
+    <div class="mb-4">
+        <span class="text-muted">Paso 1: Datos del cliente y envío →</span>
+        <span class="badge bg-success me-2">Paso 2</span> 
+        <span class="fw-bold">Revisión y pago</span>        
     </div>
-</div>
 
-<!-- Productos Relacionados -->
-<div class="container mt-5 producto-relacionado">
-    <h4 class="mb-4">Productos Relacionados</h4>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/ssd1.jpg" class="card-img-top" alt="SSD Kingston">
-                <div class="card-body text-center">
-                    <h5 class="card-title">SSD Kingston 480GB</h5>
-                    <p class="fw-bold text-success mb-2">S/ 189.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+    <div class="row g-5">
+        <!-- Resumen de productos -->
+        <div class="col-lg-7">
+            <div class="card p-4 shadow-sm">
+                <h4 class="mb-4">Resumen del pedido</h4>
+
+                <!-- Producto 1 -->
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
+                        <img src="Estetica/img/laptop1.jpg" class="img-thumbnail me-3" style="width: 70px;" alt="Producto">
+                        <div>
+                            <p class="mb-1 fw-semibold">Laptop Lenovo i5</p>
+                            <small class="text-muted">Cantidad: 1</small>
+                        </div>
+                    </div>
+                    <span class="fw-bold text-success">S/ 1899.00</span>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="d-flex align-items-center">
+                        <img src="Estetica/img/ssd1.jpg" class="img-thumbnail me-3" style="width: 70px;" alt="Producto">
+                        <div>
+                            <p class="mb-1 fw-semibold">SSD Kingston 480GB</p>
+                            <small class="text-muted">Cantidad: 1</small>
+                        </div>
+                    </div>
+                    <span class="fw-bold text-success">S/ 189.00</span>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span><strong>Total:</strong></span>
+                    <span><strong>S/ 2088.00</strong></span>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/laptop2.webp" class="card-img-top" alt="Laptop HP">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Laptop HP Ryzen 5</h5>
-                    <p class="fw-bold text-success mb-2">S/ 2150.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+
+        <!-- Métodos de pago -->
+        <div class="col-lg-5">
+            <div class="card p-4 shadow-sm">
+                <h4 class="mb-4">Método de pago</h4>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="pagoYape" checked>
+                    <label class="form-check-label" for="pagoYape">
+                        <i class="bi bi-phone me-1"></i> Yape / Plin
+                    </label>
                 </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/combo1.webp" class="card-img-top" alt="Combo XBlade">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Combo XBLADE</h5>
-                    <p class="fw-bold text-success mb-2">S/ 229.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="pagoTransferencia">
+                    <label class="form-check-label" for="pagoTransferencia">
+                        <i class="bi bi-bank me-1"></i> Transferencia bancaria
+                    </label>
                 </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="pagoPaypal">
+                    <label class="form-check-label" for="pagoPaypal">
+                        <i class="bi bi-paypal me-1"></i> PayPal
+                    </label>
+                </div>
+
+                <label for="comentario" class="form-label">Observaciones (opcional)</label>
+                <textarea class="form-control mb-3" id="comentario" rows="3"></textarea>
+
+                <button class="btn btn-verde w-100" onclick="finalizarCompra()">Finalizar compra</button>
             </div>
         </div>
     </div>
@@ -138,13 +146,15 @@
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
                     <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-geo-alt-fill me-2"></i> Jr. 2 de Mayo N° 475 - Imperial<br>
+                        <i class="bi bi-geo-alt-fill me-2"></i>
+                        Jr. 2 de Mayo N° 475 - Imperial<br>
                         (a 1/2 cuadra Plaza Armas)
                     </a>
                 </p>
                 <p>
-                    <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-whatsapp me-2"></i> 926052866 - 900955495
+                    <a href="#contactenos" class="footer-link">
+                        <i class="bi bi-whatsapp me-2"></i>
+                        926052866 - 900955495
                     </a>
                 </p>
             </div>
@@ -162,25 +172,15 @@
                 </a>
             </div>
         </div>
-
         <hr class="footer-divider">
-
         <div class="text-center pt-2">
-            <small class="footer-copyright">Copyright &copy; 2017-2024 COMPUNET. Todos los derechos reservados.</small>
+            <small class="text-light">Copyright © 2017-2024 COMPUNET. Todos los derechos reservados.</small>
         </div>
     </div>
 </footer>
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-function cambiarCantidad(valor) {
-    const input = document.getElementById("cantidad");
-    let actual = parseInt(input.value);
-    if (actual + valor >= 1) {
-        input.value = actual + valor;
-    }
-}
-</script>
+<script src="Estetica/js/pago.js"></script>
 </body>
 </html>

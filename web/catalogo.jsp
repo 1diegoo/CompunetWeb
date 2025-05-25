@@ -45,7 +45,18 @@
                         2
                     </span>
                 </a>
-                <a href="#" class="btn btn-outline-secondary"><i class="bi bi-person"></i></a>
+                <!-- Menu de usuario -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+                        <li><a class="dropdown-item" href="login.jsp"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+                        <li><a class="dropdown-item" href="registro.jsp"><i class="bi bi-person-plus me-2"></i>Crear cuenta</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item disabled" href="#"><i class="bi bi-info-circle me-2"></i>Mi cuenta (inactivo)</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -122,7 +133,7 @@
                     <img src="Estetica/img/logo-acer.png" class="marca-filtro" data-tipo="marca" data-valor="Acer" alt="Acer">
                     <img src="Estetica/img/logo-wd.png" class="marca-filtro" data-tipo="marca" data-valor="WD" alt="WD">
                     <img src="Estetica/img/logo-brother.png" class="marca-filtro" data-tipo="marca" data-valor="Brother" alt="Brother">
-                    <img src="Estetica/img/logo-bienex.png" class="marca-filtro" data-tipo="marca" data-valor="Bienex" alt="Bienex">
+                    <img src="Estetica/img/logo-bienex.jpg" class="marca-filtro" data-tipo="marca" data-valor="Bienex" alt="Bienex">
                 </div>
 
                 <!-- Rango de precio -->
@@ -217,14 +228,14 @@
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
-                    <a href="#contactenos" class="footer-link">
+                    <a href="contactenos.jsp" class="footer-link">
                         <i class="bi bi-geo-alt-fill me-2"></i>
                         Jr. 2 de Mayo N° 475 - Imperial<br>
                         (a 1/2 cuadra Plaza Armas)
                     </a>
                 </p>
                 <p>
-                    <a href="#contactenos" class="footer-link">
+                    <a href="#" class="footer-link">
                         <i class="bi bi-whatsapp me-2"></i>
                         926052866 - 900955495
                     </a>

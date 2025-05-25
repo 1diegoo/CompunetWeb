@@ -1,0 +1,26 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --gris-fondo: #f8f9fa;
+}
+
+/* Caja de opciones */
+.dashboard-box {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+    padding: 30px 15px;
+}
+.dashboard-box:hover {
+    transform: scale(1.02);
+}
+.dashboard-box i {
+    font-size: 2rem;
+    color: var(--verde-compunet);
+}
+.dashboard-box h5 {
+    font-size: 1.1rem;
+    margin-top: 10px;
+    color: #333;
+}

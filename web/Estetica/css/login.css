@@ -1,0 +1,56 @@
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --gris-fondo: #f8f9fa;
+    --negro: #2c2c2c;
+}
+
+/* Fondo general */
+body {
+    background-color: var(--gris-fondo);
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Tarjeta centrada */
+.card {
+    border-radius: 10px;
+    border: none;
+    background-color: #fff;
+}
+
+/* Título */
+.card h4 {
+    color: var(--negro);
+    font-weight: 600;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
+
+/* Botón principal */
+.btn-verde {
+    background-color: var(--verde-compunet);
+    color: #000;
+    font-weight: 600;
+    border: none;
+}
+.btn-verde:hover {
+    background-color: var(--verde-hover);
+    color: #000;
+}
+
+/* Botón de retorno */
+.btn-outline-dark.btn-sm {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+}
+
+/* Responsivo */
+@media (max-width: 576px) {
+    .card {
+        margin: 0 1rem;
+    }
+}
