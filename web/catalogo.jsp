@@ -155,65 +155,150 @@
                 <div id="contador-productos" class="mt-2 small text-muted"></div>
             </div>
             
+            <%@ page import="java.util.*, Modelo.ProductoDAO, Modelo.Producto" %>
+            <%
+                int productosPorPagina = 12;
+                int paginaActual = 1;
+
+                String paginaParam = request.getParameter("pagina");
+                if (paginaParam != null) {
+                    try {
+                        paginaActual = Integer.parseInt(paginaParam);
+                    } catch (NumberFormatException e) {
+                        paginaActual = 1;
+                    }
+                }
+
+                int offset = (paginaActual - 1) * productosPorPagina;
+                ProductoDAO dao = new ProductoDAO();
+                List<Producto> productos = dao.listarPorPagina(offset, productosPorPagina);
+
+                int totalProductos = dao.contarProductos();
+                int totalPaginas = (int) Math.ceil((double) totalProductos / productosPorPagina);
+            %>
+            
             <!-- Vista Cuadrícula -->
             <div id="vistaGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                <!-- EJEMPLO - AQUI CAMBIAR CON PRODUCTOS DINÁMICO -->
+            <% for (Producto p : productos) { %>
                 <div class="col">
                     <div class="card producto-card h-100 position-relative">
+                        
                         <!-- Etiqueta stock -->
-                        <img src="Estetica/img/Placeholder 1.png" class="etiqueta-stock" alt="In Stock">
-                        <a href="producto.jsp?id=1">
-                            <img src="Estetica/img/laptop1.jpg" class="card-img-top" alt="Laptop Lenovo">
+                        <%
+                            String imagenStock = "";
+                            if (p.getStock() > 10) {
+                                imagenStock = "stock_en.png";
+                            } else if (p.getStock() > 0) {
+                                imagenStock = "stock_pocas.png";
+                            } else {
+                                imagenStock = "stock_no.png";
+                            }
+                        %>
+                        <img src="Estetica/img/<%= imagenStock %>" class="etiqueta-stock" alt="Estado de stock">
+
+                        <a href="producto.jsp?id=<%= p.getId() %>">
+                            <img src="Estetica/img/<%= p.getImagen() %>" class="card-img-top" alt="<%= p.getNombre() %>">
                         </a>
                         <div class="card-body">
-                        <a href="producto.jsp?id=1" class="text-decoration-none text-dark">
-                            <h5 class="card-title">Laptop Lenovo</h5>
-                        </a>
-                            <p class="card-text">Core i5, 8GB RAM, 256GB SSD</p>
-                            <div class="fw-bold text-primary mb-2">S/ 1899.00</div>
-                            <button class="btn btn-verde w-100" 
-                                    onclick="window.location.href='carrito.jsp'">Agregar al carrito
-                            </button>
+                            <a href="producto.jsp?id=<%= p.getId() %>" class="text-decoration-none text-dark">
+                                <h5 class="card-title"><%= p.getNombre() %></h5>
+                            </a>
+                            <p class="card-text"><%= p.getDescripcion() %></p>
+                            <%
+                                double precioOriginal = p.getPrecio();
+                                double descuento = p.getDescuento();
+                                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+                            %>
+                            <% if (descuento > 0) { %>
+                                <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
+                                <div class="fw-bold text-primary mb-2">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></div>
+                            <% } else { %>
+                                <div class="fw-bold text-primary mb-2">S/ <%= String.format("%.2f", precioOriginal) %></div>
+                            <% } %>
+                            
+                            <!-- Botón Agregar carrito -->
+                            <% if (p.getStock() > 0) { %>
+                                <button class="btn btn-verde w-100" onclick="window.location.href='carrito.jsp'">
+                                    Agregar al carrito
+                                </button>
+                            <% } else { %>
+                                <button class="btn btn-secondary w-100" disabled>
+                                    Producto agotado
+                                </button>
+                            <% } %>
                         </div>
                     </div>
                 </div>
+            <% } %>
             </div>
 
             <!-- Vista Lista -->
             <div id="vistaLista" class="d-none">
-                <!-- EJEMPLO - AQUI CAMBIAR CON PRODUCTOS DINÁMICO -->
+                <% for (Producto p : productos) { %>
                 <div class="card mb-4 producto-card position-relative">
-                    <!-- Etiqueta stock -->
-                    <img src="Estetica/img/Placeholder 2.png" class="etiqueta-stock-lista" alt="Check Availability">
+                
+                <!-- Etiqueta stock -->
+                <%
+                    String imagenStockLista = "";
+                    if (p.getStock() > 10) {
+                        imagenStockLista = "stock_en.png";
+                    } else if (p.getStock() > 0) {
+                        imagenStockLista = "stock_pocas.png";
+                    } else {
+                        imagenStockLista = "stock_no.png";
+                    }
+                %>
+                <img src="Estetica/img/<%= imagenStockLista %>" class="etiqueta-stock-lista" alt="Estado de stock">
+
                     <div class="row g-0">
                         <div class="col-md-4">
-                        <a href="producto.jsp?id=1">
-                            <img src="Estetica/img/laptop1.jpg" class="img-fluid rounded-start" alt="Producto">
-                        </a>
+                            <a href="producto.jsp?id=<%= p.getId() %>">
+                                <img src="Estetica/img/<%= p.getImagen() %>" class="img-fluid rounded-start" alt="<%= p.getNombre() %>">
+                            </a>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <a href="producto.jsp?id=1" class="text-decoration-none text-dark">
-                                    <h5 class="card-title">Laptop Lenovo</h5>
+                                <a href="producto.jsp?id=<%= p.getId() %>" class="text-decoration-none text-dark">
+                                    <h5 class="card-title"><%= p.getNombre() %></h5>
                                 </a>
-                                <p class="card-text">Pantalla 15.6", Core i5, 8GB RAM, 256GB SSD</p>
-                                <div class="fw-bold text-primary mb-3">S/ 1899.00</div>
+                                <p class="card-text"><%= p.getDescripcion() %></p>
+                                <%
+                                    double precioOriginal = p.getPrecio();
+                                    double descuento = p.getDescuento();
+                                    double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+                                %>
+                                <% if (descuento > 0) { %>
+                                    <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
+                                    <div class="fw-bold text-primary mb-3">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></div>
+                                <% } else { %>
+                                    <div class="fw-bold text-primary mb-3">S/ <%= String.format("%.2f", precioOriginal) %></div>
+                                <% } %>
                                 <button class="btn btn-verde" onclick="window.location.href='carrito.jsp'">
-                                    Agregar al carrito</button>
+                                    Agregar al carrito
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <% } %>
             </div>
 
             <!-- Paginación -->
             <nav aria-label="Paginación del catálogo" class="mt-4">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item disabled"><a class="page-link">Anterior</a></li>
-                    <li class="page-item active"><a class="page-link">1</a></li>
-                    <li class="page-item"><a class="page-link">2</a></li>
-                    <li class="page-item"><a class="page-link">3</a></li>
-                    <li class="page-item"><a class="page-link">Siguiente</a></li>
+                    <li class="page-item <%= (paginaActual == 1) ? "disabled" : "" %>">
+                        <a class="page-link" href="catalogo.jsp?pagina=<%= paginaActual - 1 %>">Anterior</a>
+                    </li>
+
+                    <% for (int i = 1; i <= totalPaginas; i++) { %>
+                        <li class="page-item <%= (i == paginaActual) ? "active" : "" %>">
+                            <a class="page-link" href="catalogo.jsp?pagina=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
+
+                    <li class="page-item <%= (paginaActual == totalPaginas) ? "disabled" : "" %>">
+                        <a class="page-link" href="catalogo.jsp?pagina=<%= paginaActual + 1 %>">Siguiente</a>
+                    </li>
                 </ul>
             </nav>
         </section>

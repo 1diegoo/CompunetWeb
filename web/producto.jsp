@@ -57,21 +57,59 @@
     </div>
 </nav>
 
+<!-- Vinclo ProductoID -->
+<%@ page import="Modelo.ProductoDAO, Modelo.Producto" %>
+<%
+    String idStr = request.getParameter("id");
+    Producto producto = null;
+
+    if (idStr != null) {
+        try {
+            int id = Integer.parseInt(idStr);
+            ProductoDAO dao = new ProductoDAO();
+            producto = dao.obtenerProductoPorId(id);
+        } catch (Exception e) {
+            out.println("Error al obtener producto: " + e.getMessage());
+        }
+    }
+%>
+
 <!-- Producto -->
 <div class="container py-5">
     <div class="row">
+        <% if (producto != null) { %>
         <div class="col-lg-6 text-center mb-4 mb-lg-0">
-            <img src="Estetica/img/laptop1.jpg" class="img-fluid rounded shadow-sm" alt="Laptop Lenovo">
+            <img src="Estetica/img/<%= producto.getImagen() %>" class="img-fluid rounded shadow-sm" alt="<%= producto.getNombre() %>">
         </div>
 
         <!-- Detalles -->
         <div class="col-lg-6">
-            <h1 class="mb-3">Laptop Lenovo i5</h1>
-            <p class="text-muted">SKU: D5515AI</p>
-            <p><strong>Marca:</strong> Lenovo</p>
-            <p><strong>Disponibilidad:</strong> En stock</p>
-            <h4 class="text-success fw-bold">S/ 1899.00</h4>
-            <p>Notebook con procesador Intel Core i5, 8GB RAM y disco sólido de 256GB. Perfecta para estudios, oficina o navegación diaria.</p>
+            <h1 class="mb-3"><%= producto.getNombre() %></h1>
+            <p class="text-muted">SKU: PROD-<%= producto.getId() %></p>
+            <p><strong>Marca:</strong> <%= producto.getMarca() %></p>
+
+            <!-- Disponibildad -->
+            <% if (producto.getStock() == 0) { %>
+                <p><strong>Disponibilidad:</strong> <span class="text-danger">Producto Agotado</span></p>
+            <% } else if (producto.getStock() <= 10) { %>
+                <p><strong>Disponibilidad:</strong> <span class="text-danger">Últimas unidades (quedan <%= producto.getStock() %>)</span></p>
+            <% } else { %>
+                <p><strong>Disponibilidad:</strong> <span class="text-success">En stock</span></p>
+            <% } %>
+
+            <!-- Precio -->
+            <%
+                double precioOriginal = producto.getPrecio();
+                double descuento = producto.getDescuento();
+                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+            %>
+            <% if (descuento > 0) { %>
+                <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
+                <h4 class="text-success fw-bold">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></h4>
+            <% } else { %>
+                <h4 class="text-success fw-bold">S/ <%= String.format("%.2f", precioOriginal) %></h4>
+            <% } %>
+            <p><%= producto.getDescripcion() %></p>
 
             <!-- Cantidad -->
             <div class="d-flex align-items-center mb-3">
@@ -85,50 +123,79 @@
 
             <!-- Botones -->
             <div class="d-flex gap-2">
-                <button class="btn btn-verde flex-fill">
+            <% if (producto.getStock() > 0) { %>
+                <button id="btnAgregarPrincipal" class="btn btn-verde flex-fill" onclick="window.location.href='carrito.jsp'">
                     <i class="bi bi-cart-plus me-2"></i> Agregar al carrito
                 </button>
+            <% } else { %>
+                <button class="btn btn-secondary flex-fill" disabled>
+                    <i class="bi bi-x-circle me-2"></i> Sin stock
+                </button>
+            <% } %>
             </div>
         </div>
+        <% } else { %>
+        <div class="col-12">
+            <div class="alert alert-danger text-center">
+                Producto no encontrado o ID inválido.
+            </div>
+        </div>
+        <% } %>
     </div>
 </div>
 
+     
+<%@ page import="java.util.*, Modelo.ProductoDAO, Modelo.Producto" %>
+<%
+    List<Producto> relacionados = new ArrayList<>();
+    if (producto != null) {
+        ProductoDAO dao = new ProductoDAO();
+        relacionados = dao.obtenerRelacionados(producto, 3);
+    }
+%>
+
 <!-- Productos Relacionados -->
+<% if (!relacionados.isEmpty()) { %>
 <div class="container mt-5 producto-relacionado">
     <h4 class="mb-4">Productos Relacionados</h4>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+    <% for (Producto r : relacionados) { 
+           double precioFinal = r.getPrecio() - (r.getPrecio() * r.getDescuento() / 100);
+           String etiqueta = "stock_en.png";
+           if (r.getStock() == 0) etiqueta = "stock_no.png";
+           else if (r.getStock() < 10) etiqueta = "stock_pocas.png";
+    %>
         <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/ssd1.jpg" class="card-img-top" alt="SSD Kingston">
+            <div class="card h-100 producto-card position-relative">
+                <!-- Etiqueta visual de stock -->
+                <img src="Estetica/img/<%= etiqueta %>" class="etiqueta-stock" alt="Disponibilidad">
+
+                <a href="producto.jsp?id=<%= r.getId() %>">
+                    <img src="Estetica/img/<%= r.getImagen() %>" class="card-img-top" alt="<%= r.getNombre() %>">
+                </a>
                 <div class="card-body text-center">
-                    <h5 class="card-title">SSD Kingston 480GB</h5>
-                    <p class="fw-bold text-success mb-2">S/ 189.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
+                    <h5 class="card-title"><%= r.getNombre() %></h5>
+                    <% if (r.getDescuento() > 0) { %>
+                        <p class="mb-1">
+                            <span class="text-muted text-decoration-line-through small">S/ <%= r.getPrecio() %></span><br>
+                            <span class="fw-bold text-success">S/ <%= String.format("%.2f", precioFinal) %></span>
+                        </p>
+                    <% } else { %>
+                        <p class="fw-bold text-success mb-2">S/ <%= String.format("%.2f", precioFinal) %></p>
+                    <% } %>
+
+                    <% if (r.getStock() > 0) { %>
+                        <button class="btn btn-sm btn-verde" onclick="window.location.href='carrito.jsp'">Agregar al carrito</button>
+                    <% } else { %>
+                        <button class="btn btn-sm btn-secondary" disabled>Producto agotado</button>
+                    <% } %>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/laptop2.webp" class="card-img-top" alt="Laptop HP">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Laptop HP Ryzen 5</h5>
-                    <p class="fw-bold text-success mb-2">S/ 2150.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <img src="Estetica/img/combo1.webp" class="card-img-top" alt="Combo XBlade">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Combo XBLADE</h5>
-                    <p class="fw-bold text-success mb-2">S/ 229.00</p>
-                    <button class="btn btn-sm btn-verde">Agregar al carrito</button>
-                </div>
-            </div>
-        </div>
+    <% } %>
     </div>
 </div>
+<% } %>
 
 <!-- Footer -->
 <footer class="footer-compunet text-white pt-4 mt-5">
@@ -174,13 +241,37 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function cambiarCantidad(valor) {
-    const input = document.getElementById("cantidad");
-    let actual = parseInt(input.value);
-    if (actual + valor >= 1) {
-        input.value = actual + valor;
+const stockDisponible = <%= producto.getStock() %>;
+
+    function cambiarCantidad(valor) {
+        const input = document.getElementById("cantidad");
+        let actual = parseInt(input.value);
+
+        if (stockDisponible === 0) {
+            input.value = 0;
+            return;
+        }
+
+        let nuevoValor = actual + valor;
+
+        if (nuevoValor >= 1 && nuevoValor <= stockDisponible) {
+            input.value = nuevoValor;
+        }
     }
-}
+
+    window.onload = function () {
+    const input = document.getElementById("cantidad");
+    const botones = document.querySelectorAll(".input-group button");
+    const botonPrincipal = document.getElementById("btnAgregarPrincipal");
+
+    if (stockDisponible === 0) {
+        input.value = 0;
+        botones.forEach(btn => btn.disabled = true);
+        if (botonPrincipal) {
+            botonPrincipal.disabled = true;
+        }
+    }
+    };
 </script>
 </body>
 </html>

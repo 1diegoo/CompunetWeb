@@ -30,14 +30,14 @@
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 65px;
+    width: 90px;
     height: auto;
 }
 .etiqueta-stock-lista {
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 65px;
+    width: 120px;
     height: auto;
     z-index: 1;
 }
@@ -88,6 +88,13 @@ aside input[type="text"] {
     color: #000;
 }
 
+/* Producto sin stock*/
+.btn[disabled] {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
 /* Paginación activa */
 .pagination .page-link {
     color: var(--negro);
@@ -96,6 +103,25 @@ aside input[type="text"] {
     background-color: var(--verde-compunet);
     border-color: var(--verde-compunet);
     color: var(--negro);
+}
+
+/* RESPONSIVO Paginación */
+@media (max-width: 576px) {
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .pagination .page-item {
+        flex: 1 1 auto;
+        min-width: 40px;
+    }
+
+    .pagination .page-link {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.6rem;
+    }
 }
 
 /* Chips de filtros activos */

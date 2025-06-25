@@ -161,16 +161,6 @@ aside input[type=range] {
     font-size: 0.9rem;
 }
 
-/* Paginación activa */
-.pagination .page-link {
-    color: var(--negro);
-}
-.pagination .page-item.active .page-link {
-    background-color: var(--verde-compunet);
-    border-color: var(--verde-compunet);
-    color: var(--negro);
-}
-
 /* Footer */
 .footer-compunet {
     background-color: #2C2C2C;
@@ -247,6 +237,21 @@ aside input[type=range] {
 .producto-relacionado .btn {
     font-size: 0.9rem;
     padding: 0.3rem 0.75rem;
+}
+.etiqueta-stock {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 90px;
+    height: auto;
+}
+.etiqueta-stock-lista {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 120px;
+    height: auto;
+    z-index: 1;
 }
 
 .dropdown-menu a {
