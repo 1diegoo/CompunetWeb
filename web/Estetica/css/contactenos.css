@@ -34,7 +34,6 @@
 
 /* Enlaces de WhatsApp */
 a[href*="wa.me"] {
-    color: var(--verde-compunet);
     font-weight: 500;
     text-decoration: none;
 }

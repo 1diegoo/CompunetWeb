@@ -13,7 +13,11 @@
 
 <!-- Topbar -->
 <div class="bg-dark text-white py-1 small text-center">
-    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | Contactos: 926052866 - 900955495</div>
+    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | 
+        Contactos: 
+        <a href="https://wa.me/51926052866" target="_blank">926052866</a> - 
+        <a href="https://wa.me/51900640484" target="_blank">900640484</a>
+    </div>
 </div>
 
 <!-- Navbar -->
@@ -78,106 +82,75 @@
     </button>
 </div>
 
+<%@ page import="java.util.*, Modelo.ProductoDAO, Modelo.Producto" %>
+<%
+    ProductoDAO dao = new ProductoDAO();
+    List<Producto> destacados = dao.obtenerProductosDestacados(8);
+%>
+
 <!-- Carrusel de productos destacados -->
 <section class="py-5">
     <div class="container">
         <h3 class="mb-4">Productos Destacados</h3>
-        <div id="carouselProductos" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div id="carouselProductos" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <!-- Primer grupo de productos -->
-                <div class="carousel-item active">
+                <%
+                    for (int i = 0; i < destacados.size(); i += 4) {
+                %>
+                <div class="carousel-item <%= (i == 0) ? "active" : "" %>">
                     <div class="row g-4">
+                        <%
+                            for (int j = i; j < i + 4 && j < destacados.size(); j++) {
+                                Producto p = destacados.get(j);
+                                double precioOriginal = p.getPrecio();
+                                double descuento = p.getDescuento();
+                                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+                        %>
                         <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/laptop1.jpg" class="card-img-top" alt="Laptop">
-                                <div class="card-body">
-                                    <h5 class="card-title">Laptop Lenovo i5</h5>
-                                    <p class="card-text">8GB RAM, 256GB SSD</p>
-                                    <strong>S/ 1899.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/ssd1.jpg" class="card-img-top" alt="SSD">
-                                <div class="card-body">
-                                    <h5 class="card-title">SSD Kingston 480GB</h5>
-                                    <p class="card-text">Velocidad 500MB/s</p>
-                                    <strong>S/ 189.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/combo1.webp" class="card-img-top" alt="Combo 1">
-                                <div class="card-body">
-                                    <h5 class="card-title">Combo XBlade</h5>
-                                    <p>Teclado + Mouse + Audífonos</p>
-                                    <strong>S/ 229.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/tablet1.webp" class="card-img-top" alt="Tablet">
-                                <div class="card-body">
-                                    <h5 class="card-title">Tablet Lenovo</h5>
-                                    <p>10.1" Android 11</p>
-                                    <strong>S/ 599.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="card h-100 position-relative producto-card">
+                                <%
+                                    String etiquetaStock = "";
+                                    if (p.getStock() > 10) {
+                                        etiquetaStock = "stock_en.png";
+                                    } else if (p.getStock() > 0) {
+                                        etiquetaStock = "stock_pocas.png";
+                                    } else {
+                                        etiquetaStock = "stock_no.png";
+                                    }
+                                %>
+                                <img src="Estetica/img/<%= etiquetaStock %>" class="etiqueta-stock" alt="Stock">
+                                <a href="producto.jsp?id=<%= p.getId() %>">
+                                    <img src="Estetica/img/<%= p.getImagen() %>" class="card-img-top" alt="<%= p.getNombre() %>">
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="card-title"><%= p.getNombre() %></h5>
+                                    <p class="card-text"><%= p.getDescripcion() %></p>
+                                    
+                                    <% if (descuento > 0) { %>
+                                        <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
+                                        <p class="fw-bold text-primary">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></p>
+                                    <% } else { %>
+                                        <p class="fw-bold text-primary">S/ <%= String.format("%.2f", precioOriginal) %></p>
+                                    <% } %>
 
-                <!-- Segundo grupo de productos -->
-                <div class="carousel-item">
-                    <div class="row g-4">
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/laptop2.webp" class="card-img-top" alt="Laptop HP">
-                                <div class="card-body">
-                                    <h5 class="card-title">Laptop HP Ryzen 5</h5>
-                                    <p>8GB RAM, 512GB SSD</p>
-                                    <strong>S/ 2150.00</strong>
+                                    <% if (p.getStock() > 0) { %>
+                                        <button class="btn btn-sm btn-verde w-100" onclick="window.location.href='carrito.jsp'">
+                                            Agregar al carrito
+                                        </button>
+                                    <% } else { %>
+                                        <button class="btn btn-sm btn-secondary w-100" disabled>
+                                            Sin stock
+                                        </button>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/impresora1.webp" class="card-img-top" alt="Impresora">
-                                <div class="card-body">
-                                    <h5 class="card-title">Impresora Epson L3210</h5>
-                                    <p>Multifunción Ecotank</p>
-                                    <strong>S/ 529.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/ssd2.webp" class="card-img-top" alt="SSD Gigabyte">
-                                <div class="card-body">
-                                    <h5 class="card-title">SSD Gigabyte 240GB</h5>
-                                    <p>Rápido y confiable</p>
-                                    <strong>S/ 129.00</strong>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="card h-100">
-                                <img src="Estetica/img/combo2.webp" class="card-img-top" alt="Combo 2">
-                                <div class="card-body">
-                                    <h5 class="card-title">Combo Halion</h5>
-                                    <p>Teclado, Mouse, Mousepad</p>
-                                    <strong>S/ 199.00</strong>
-                                </div>
-                            </div>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
+                <% } %>
             </div>
 
-            <!-- Controles del carrusel -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselProductos" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
@@ -186,7 +159,7 @@
             </button>
         </div>
     </div>
-</section>  
+</section>
 
 <!-- Categorías -->
 <section class="py-5 bg-light">
@@ -272,34 +245,34 @@
 <footer class="footer-compunet text-white pt-4 mt-5">
     <div class="container">
         <div class="row text-center text-md-start">
-            <!-- Columna izquierda: Información de contacto -->
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
-                    <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-geo-alt-fill me-2"></i>
-                        Jr. 2 de Mayo N° 475 - Imperial<br>
-                        (a 1/2 cuadra Plaza Armas)
-                    </a>
+                    <i class="bi bi-geo-alt-fill me-2"></i>
+                        <a href="https://www.google.com/maps?q=Jr.+2+de+Mayo+475,+Imperial,+Cañete,+Perú" target="_blank" class="footer-link">
+                            Jr. 2 de Mayo N° 475 - Imperial
+                        </a>
                 </p>
+
                 <p>
-                    <a href="#" class="footer-link">
-                        <i class="bi bi-whatsapp me-2"></i>
-                        926052866 - 900955495
-                    </a>
+                    <i class="bi bi-whatsapp me-2"></i>
+                    <a href="https://wa.me/51926052866" target="_blank" class="footer-link">92052866</a> - 
+                    <a href="https://wa.me/51900955495" target="_blank" class="footer-link">900955495</a>
                 </p>
             </div>
 
-            <!-- Columna central: Redes sociales -->
             <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center">
                 <h5>Síguenos</h5>
                 <div class="d-flex gap-3">
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/wcompunec" class="footer-icon" target="_blank" >
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/compunetcanete/" class="footer-icon" target="_blank" >
+                        <i class="bi bi-instagram"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- Columna derecha: Libro de reclamaciones -->
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
                 <a href="#" class="reclamaciones-link d-inline-block mt-2">
@@ -307,11 +280,9 @@
                 </a>
             </div>
         </div>
-
         <hr class="footer-divider">
-
         <div class="text-center pt-2">
-            <small class="footer-copyright">Copyright &copy; 2017-2024 COMPUNET. Todos los derechos reservados.</small>
+            <small class="text-light">Copyright © 2017-2024 COMPUNET. Todos los derechos reservados.</small>
         </div>
     </div>
 </footer>

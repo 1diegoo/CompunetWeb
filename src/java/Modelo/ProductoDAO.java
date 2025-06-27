@@ -179,5 +179,35 @@ public class ProductoDAO {
         }
         return 0;
     }
+    
+    public List<Producto> obtenerProductosDestacados(int cantidad) {
+        List<Producto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM productos WHERE stock > 0 ORDER BY RAND() LIMIT ?";
+
+        try {
+            con = new Conexion().getConexion();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, cantidad);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Producto p = new Producto();
+                p.setId(rs.getInt("id"));
+                p.setNombre(rs.getString("nombre"));
+                p.setDescripcion(rs.getString("descripcion"));
+                p.setPrecio(rs.getDouble("precio"));
+                p.setImagen(rs.getString("imagen"));
+                p.setCategoria(rs.getString("categoria"));
+                p.setStock(rs.getInt("stock"));
+                p.setMarca(rs.getString("marca"));
+                p.setDescuento(rs.getDouble("descuento"));
+                lista.add(p);
+            }
+        } catch (Exception e) {
+            System.out.println("Error en productos destacados: " + e.getMessage());
+        }
+
+        return lista;
+    }
 
 }

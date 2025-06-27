@@ -105,17 +105,27 @@ h1, h2, h3, h4, h5 {
 }
 
 /* Footer */
-footer {
-    background-color: var(--negro);
-    color: var(--blanco);
-    font-size: 0.9rem;
-}
-footer a {
-    color: var(--verde-compunet);
+.footer-link {
+    color: white;
     text-decoration: none;
 }
-footer a:hover {
+.footer-link:hover {
+    color: var(--verde-compunet);
     text-decoration: underline;
+}
+
+.footer-icon {
+    color: white;
+    font-size: 1.5rem;
+    transition: color 0.2s ease;
+}
+.footer-icon:hover {
+    color: var(--verde-compunet);
+}
+
+.reclamaciones-link:hover img {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(33%) saturate(446%) hue-rotate(35deg) brightness(95%) contrast(88%);
+    transition: filter 0.3s ease;
 }
 
 /* Tarjetas */

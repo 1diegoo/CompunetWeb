@@ -15,7 +15,11 @@
 
 <!-- Topbar -->
 <div class="bg-dark text-white py-1 small text-center">
-    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | Contactos: 926052866 - 900955495</div>
+    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | 
+        Contactos: 
+        <a href="https://wa.me/51926052866" target="_blank">926052866</a> - 
+        <a href="https://wa.me/51900640484" target="_blank">900640484</a>
+    </div>
 </div>
 
 <!-- Navbar -->
@@ -145,34 +149,34 @@
 <footer class="footer-compunet text-white pt-4 mt-5">
     <div class="container">
         <div class="row text-center text-md-start">
-            <!-- Columna izquierda: Información de contacto -->
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
-                    <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-geo-alt-fill me-2"></i>
-                        Jr. 2 de Mayo N° 475 - Imperial<br>
-                        (a 1/2 cuadra Plaza Armas)
-                    </a>
+                    <i class="bi bi-geo-alt-fill me-2"></i>
+                        <a href="https://www.google.com/maps?q=Jr.+2+de+Mayo+475,+Imperial,+Cañete,+Perú" target="_blank" class="footer-link">
+                            Jr. 2 de Mayo N° 475 - Imperial
+                        </a>
                 </p>
+
                 <p>
-                    <a href="#contactenos" class="footer-link">
-                        <i class="bi bi-whatsapp me-2"></i>
-                        926052866 - 900955495
-                    </a>
+                    <i class="bi bi-whatsapp me-2"></i>
+                    <a href="https://wa.me/51926052866" target="_blank" class="footer-link">92052866</a> - 
+                    <a href="https://wa.me/51900955495" target="_blank" class="footer-link">900955495</a>
                 </p>
             </div>
 
-            <!-- Columna central: Redes sociales -->
             <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center">
                 <h5>Síguenos</h5>
                 <div class="d-flex gap-3">
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/wcompunec" class="footer-icon" target="_blank" >
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/compunetcanete/" class="footer-icon" target="_blank" >
+                        <i class="bi bi-instagram"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- Columna derecha: Libro de reclamaciones -->
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
                 <a href="#" class="reclamaciones-link d-inline-block mt-2">
@@ -180,11 +184,9 @@
                 </a>
             </div>
         </div>
-
         <hr class="footer-divider">
-
         <div class="text-center pt-2">
-            <small class="footer-copyright">Copyright &copy; 2017-2024 COMPUNET. Todos los derechos reservados.</small>
+            <small class="text-light">Copyright © 2017-2024 COMPUNET. Todos los derechos reservados.</small>
         </div>
     </div>
 </footer>
