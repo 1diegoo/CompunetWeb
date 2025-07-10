@@ -1,150 +1,174 @@
-/* VISTA CUADRADA / LISTA */
-function cambiarVista(tipo) {
-    const grid = document.getElementById("vistaGrid");
-    const lista = document.getElementById("vistaLista");
-    const btnGrid = document.getElementById("btnGrid");
-    const btnLista = document.getElementById("btnLista");
+document.addEventListener('DOMContentLoaded', function () {
+    let paginaActual = 1;
 
-    if (tipo === 'grid') {
-        grid.classList.remove("d-none");
-        lista.classList.add("d-none");
-        btnGrid.classList.add("active");
-        btnLista.classList.remove("active");
-    } else {
-        grid.classList.add("d-none");
-        lista.classList.remove("d-none");
-        btnLista.classList.add("active");
-        btnGrid.classList.remove("active");
+    cargarProductos();
+
+    document.querySelectorAll('#filtro-categorias input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => {
+            paginaActual = 1;
+            cargarProductos();
+        });
+    });
+
+    document.querySelectorAll('.filtro-marca').forEach(img => {
+        img.addEventListener('click', function () {
+            this.classList.toggle('activa');
+            paginaActual = 1;
+            cargarProductos();
+        });
+    });
+
+    document.querySelectorAll('#filtro-precios input[name="precio"]').forEach(rb => {
+        rb.addEventListener('change', () => {
+            paginaActual = 1;
+            cargarProductos();
+        });
+    });
+
+    document.getElementById('filtro-nombre').addEventListener('input', () => {
+        paginaActual = 1;
+        cargarProductos();
+    });
+
+    document.getElementById('limpiar-filtros').addEventListener('click', () => {
+        document.getElementById('filtro-nombre').value = '';
+        document.querySelectorAll('#filtro-categorias input').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.filtro-marca').forEach(img => img.classList.remove('activa'));
+        document.querySelectorAll('#filtro-precios input[name="precio"]').forEach(rb => rb.checked = false);
+        paginaActual = 1;
+        cargarProductos();
+    });
+
+    document.getElementById('paginacion').addEventListener('click', function (e) {
+        if (e.target.matches('.page-link')) {
+            e.preventDefault();
+            const nuevaPagina = parseInt(e.target.dataset.pagina);
+            if (!isNaN(nuevaPagina)) {
+                paginaActual = nuevaPagina;
+                cargarProductos();
+            }
+        }
+    });
+
+    function cargarProductos() {
+        const nombre = document.getElementById('filtro-nombre').value.trim();
+        const categorias = [...document.querySelectorAll('#filtro-categorias input:checked')].map(cb => cb.value);
+        const marcas = [...document.querySelectorAll('.filtro-marca.activa')].map(img => img.dataset.marca);
+        const precioSeleccionado = document.querySelector('#filtro-precios input[name="precio"]:checked');
+        let precioMin = 0, precioMax = 99999;
+        if (precioSeleccionado) {
+            const valores = precioSeleccionado.value.split('-');
+            precioMin = parseFloat(valores[0]);
+            precioMax = parseFloat(valores[1]);
+        }
+
+        mostrarChips(nombre, categorias, marcas, precioMin, precioMax);
+
+        const params = new URLSearchParams();
+        params.append('pagina', paginaActual);
+        params.append('busqueda', nombre);
+        params.append('precioMin', precioMin);
+        params.append('precioMax', precioMax);
+        if (categorias.length > 0) params.append('categoria', categorias.join(','));
+        marcas.forEach(m => params.append('marca[]', m));
+        
+        fetch('filtrarProductos.jsp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+        })
+        .then(res => res.text())
+        .then(html => {
+            const [productosHTML, paginacionHTML] = html.split('<!--PAGINACION-->');
+            document.getElementById('contenedor-productos').innerHTML = productosHTML;
+            document.getElementById('paginacion').innerHTML = paginacionHTML;
+        })
+        .catch(err => {
+            console.error('Error al cargar productos:', err);
+        });
     }
-}
 
-/* ACTUALIZAR RANGO PRECIO */
-function actualizarRango(valor) {
-    document.getElementById("rangoValor").textContent = valor;
-    filtrosActivos.precio = `S/ 0 - ${valor}`;
-    productosFiltrados = Math.floor(Math.random() * productosTotales); // simulado
-    renderizarFiltrosActivos();
-}
+    function mostrarChips(nombre, categorias, marcas, min, max) {
+        const chipsContainer = document.getElementById('chips-activos');
+        chipsContainer.innerHTML = '';
 
-/*FILTROS ACTIVOS Y CONTADOR */
+        if (nombre) {
+            chipsContainer.innerHTML += crearChip('Nombre', nombre);
+        }
 
-// Simulacion
-let productosTotales = 12;
-let productosFiltrados = 6;
+        categorias.forEach(cat => {
+            chipsContainer.innerHTML += crearChip('Categoría', cat);
+        });
 
-let filtrosActivos = {
-    marca: ["HP", "Kingston"],
-    categoria: ["SSD"],
-    precio: "S/ 0 - 1500"
-};
+        marcas.forEach(marca => {
+            chipsContainer.innerHTML += crearChip('Marca', marca);
+        });
 
-/* Mostrar filtros activos y contador */
-function renderizarFiltrosActivos() {
-    const contenedor = document.getElementById("filtros-activos");
-    const contador = document.getElementById("contador-productos");
-
-    contenedor.innerHTML = "";
-
-    for (const [tipo, valores] of Object.entries(filtrosActivos)) {
-        if (Array.isArray(valores)) {
-            valores.forEach((valor) => {
-                contenedor.appendChild(crearChip(tipo, valor));
-            });
-        } else {
-            contenedor.appendChild(crearChip(tipo, valores));
+        if (min !== 0 || max !== 99999) {
+            chipsContainer.innerHTML += crearChip('Precio', `S/${min} - S/${max}`);
         }
     }
 
-    if (Object.keys(filtrosActivos).length > 0) {
-        const limpiar = document.createElement("div");
-        limpiar.className = "filtro-chip";
-        limpiar.innerHTML = `Limpiar todos <button onclick="limpiarTodosFiltros()">✕</button>`;
-        contenedor.appendChild(limpiar);
+    function crearChip(tipo, valor) {
+        const tipoKey = tipo.toLowerCase();
+
+        return `
+            <span class="chip-filtro me-2 mb-2" 
+                  data-tipo="${tipoKey}" data-valor="${valor}">
+                ${tipo}: ${valor}
+                <button type="button" class="btn-close btn-close-white btn-sm ms-2" aria-label="Quitar filtro"></button>
+            </span>
+        `;
     }
 
-    contador.innerText = `Mostrando ${productosFiltrados} de ${productosTotales} productos`;
-}
+    const params = new URLSearchParams(window.location.search);
+    const marcaInicial = params.get('marca');
 
-function crearChip(tipo, valor) {
-    const div = document.createElement("div");
-    div.className = "filtro-chip";
-    div.innerHTML = `${valor} <button onclick="eliminarFiltro('${tipo}', '${valor}')">✕</button>`;
-    return div;
-}
-
-function eliminarFiltro(tipo, valor) {
-    if (Array.isArray(filtrosActivos[tipo])) {
-        filtrosActivos[tipo] = filtrosActivos[tipo].filter(v => v !== valor);
-        if (filtrosActivos[tipo].length === 0) delete filtrosActivos[tipo];
-    } else {
-        delete filtrosActivos[tipo];
+    if (marcaInicial) {
+        document.querySelectorAll('.filtro-marca').forEach(img => {
+            if (img.dataset.marca === marcaInicial) {
+                img.classList.add('activa');
+            }
+        });
+    }
+    
+    const categoriaInicial = params.get('categoria');
+    if (categoriaInicial) {
+        document.querySelectorAll('#filtro-categorias input[type="checkbox"]').forEach(cb => {
+            if (cb.value === categoriaInicial) {
+                cb.checked = true;
+            }
+        });
     }
 
-    // Desmarcar visual
-    if (tipo === "marca") {
-        document.querySelectorAll(`.marca-filtro[data-valor="${valor}"]`).forEach(el => el.classList.remove('seleccionado'));
-    } else {
-        document.querySelectorAll(`.filtro-checkbox[data-tipo="${tipo}"][value="${valor}"]`).forEach(el => el.checked = false);
-    }
+    document.getElementById('chips-activos').addEventListener('click', function (e) {
+        if (e.target.classList.contains('btn-close')) {
+            const chip = e.target.closest('.chip-filtro');
+            const tipo = chip.dataset.tipo;
+            const valor = chip.dataset.valor;
 
-    productosFiltrados = Math.floor(Math.random() * productosTotales);
-    renderizarFiltrosActivos();
-}
+            chip.remove();
 
-function limpiarTodosFiltros() {
-    filtrosActivos = {};
-    productosFiltrados = productosTotales;
-    renderizarFiltrosActivos();
-}
+            if (tipo === 'marca') {
+                document.querySelectorAll('.filtro-marca').forEach(img => {
+                    if (img.dataset.marca === valor) {
+                        img.classList.remove('activa');
+                    }
+                });
+            } else if (tipo === 'categoría') {
+                document.querySelectorAll('#filtro-categorias input[type="checkbox"]').forEach(cb => {
+                    if (cb.value === valor) {
+                        cb.checked = false;
+                    }
+                });
+            } else if (tipo === 'nombre') {
+                document.getElementById('filtro-nombre').value = '';
+            } else if (tipo === 'precio') {
+                document.querySelectorAll('#filtro-precios input[name="precio"]').forEach(rb => rb.checked = false);
+            }
 
-// Ejecutar al cargar
-document.addEventListener("DOMContentLoaded", () => {
-    renderizarFiltrosActivos();
-    inicializarFiltrosInteractivos();
+            paginaActual = 1;
+            cargarProductos();
+        }
+    });
 });
-
-function inicializarFiltrosInteractivos() {
-    // Checkboxes de categoría
-    document.querySelectorAll('.filtro-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', () => {
-            const tipo = checkbox.dataset.tipo;
-            const valor = checkbox.value;
-
-            if (checkbox.checked) {
-                if (!filtrosActivos[tipo]) filtrosActivos[tipo] = [];
-                if (!filtrosActivos[tipo].includes(valor)) {
-                    filtrosActivos[tipo].push(valor);
-                }
-            } else {
-                filtrosActivos[tipo] = filtrosActivos[tipo].filter(v => v !== valor);
-                if (filtrosActivos[tipo].length === 0) delete filtrosActivos[tipo];
-            }
-
-            productosFiltrados = Math.floor(Math.random() * productosTotales); // Simulado
-            renderizarFiltrosActivos();
-        });
-    });
-
-    // Logos de marca
-    document.querySelectorAll('.marca-filtro').forEach(img => {
-        img.addEventListener('click', () => {
-            const tipo = img.dataset.tipo;
-            const valor = img.dataset.valor;
-
-            if (!filtrosActivos[tipo]) filtrosActivos[tipo] = [];
-
-            if (filtrosActivos[tipo].includes(valor)) {
-                filtrosActivos[tipo] = filtrosActivos[tipo].filter(v => v !== valor);
-                img.classList.remove('seleccionado');
-                if (filtrosActivos[tipo].length === 0) delete filtrosActivos[tipo];
-            } else {
-                filtrosActivos[tipo].push(valor);
-                img.classList.add('seleccionado');
-            }
-
-            productosFiltrados = Math.floor(Math.random() * productosTotales); // Simulado
-            renderizarFiltrosActivos();
-        });
-    });
-}
-eliminarFiltro()

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -58,80 +59,58 @@
     </div>
 </nav>
 
-<!-- Carrito -->
-<div class="container my-5">
-    <h2 class="mb-4">Carrito de Compras</h2>
-    <div class="row">
-        <!-- Lista de productos -->
-        <div class="col-lg-8">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Subtotal</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Producto ejemplo -->
-                        <tr>
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="Estetica/img/laptop1.jpg" alt="Producto" class="img-thumbnail me-3">
-                                    <div>
-                                        <h6 class="mb-1">Laptop Lenovo Core i5</h6>
-                                        <small class="text-muted">8GB RAM, 256GB SSD</small>
-                                        <div class="text-muted small">ID: PROD001</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>S/ 1899.00</td>
-                            <td>
-                                <div class="input-group">
-                                    <button class="btn btn-outline-secondary btn-sm">-</button>
-                                    <input type="text" class="form-control text-center form-control-sm" value="1" readonly>
-                                    <button class="btn btn-outline-secondary btn-sm">+</button>
-                                </div>
-                            </td>
-                            <td>S/ 1899.00</td>
-                            <td><button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="d-flex justify-content-between mt-3">
-                <a href="catalogo.jsp" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i> Seguir Comprando</a>
-                <button class="btn btn-outline-danger"><i class="bi bi-x-circle me-1"></i> Vaciar Carrito</button>
-            </div>
-        </div>
-
-        <!-- Resumen -->
-        <div class="col-lg-4 mt-4 mt-lg-0">
-            <div class="card p-4 shadow-sm">
-                <h5 class="mb-3">Resumen de Compra</h5>
-                <div class="d-flex justify-content-between">
-                    <span>Subtotal:</span>
-                    <span>S/ 1899.00</span>
-                </div>
-                <div class="d-flex justify-content-between">
-                    <span>Envío:</span>
-                    <span>Gratis</span>
-                </div>
-                <hr>
-                <div class="d-flex justify-content-between fw-bold">
-                    <span>Total:</span>
-                    <span>S/ 1899.00</span>
-                </div>
-                <button class="btn btn-verde w-100 mt-3" onclick="window.location.href='datos.jsp'">
-                    <i class="bi bi-credit-card me-2"></i> Continuar Compra
-                </button>
-            </div>
+<%@ page import="java.util.*, Modelo.ItemCarrito" %>
+<%
+    List<ItemCarrito> carrito = (List<ItemCarrito>) session.getAttribute("carrito");
+    if (carrito == null || carrito.isEmpty()) {
+%>
+    <div class="container mt-5">
+        <h4>Tu carrito está vacío</h4>
+        <a href="catalogo.jsp" class="btn btn-primary mt-3">Seguir comprando</a>
+    </div>
+<%
+    } else {
+        double total = 0;
+%>
+    <div class="container mt-5">
+        <h4>Carrito de Compras</h4>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            <%
+                for (ItemCarrito item : carrito) {
+                    double subtotal = item.getSubtotal();
+                    total += subtotal;
+            %>
+                <tr>
+                    <td><img src="Estetica/img/<%=item.getImagen()%>" style="height: 50px;"> <%=item.getNombre()%></td>
+                    <td>S/<%=String.format("%.2f", item.getPrecioFinal())%></td>
+                    <td><%=item.getCantidad()%></td>
+                    <td>S/<%=String.format("%.2f", subtotal)%></td>
+                    <td>
+                        <a href="quitarDelCarrito.jsp?id=<%=item.getId()%>" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            <% } %>
+            </tbody>
+        </table>
+        <h5 class="text-end">Total: S/<%=String.format("%.2f", total)%></h5>
+        <div class="text-end">
+            <a href="catalogo.jsp" class="btn btn-outline-secondary">Seguir comprando</a>
+            <a href="#" class="btn btn-success">Finalizar compra</a>
         </div>
     </div>
-</div>
+<%
+    }
+%>
 
 <!-- Footer -->
 <footer class="footer-compunet text-white pt-4 mt-5">
@@ -177,5 +156,23 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="Estetica/js/carrito.js"></script>
+<%
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -75,42 +77,54 @@
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
             <div class="col">
-                <div class="card h-100 text-center shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Plan S/30</h5>
-                        <p class="card-text small">Ideal para redes sociales y navegación básica.</p>
-                        <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                <a href="https://wa.me/51916206379?text=Hola%2C%20estoy%20interesado%20en%20el%20servicio%20de%20internet%20del%20plan%20S/30" target="_blank" class="text-decoration-none">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Plan S/30</h5>
+                            <p class="card-text small">Ideal para redes sociales y navegación básica.</p>
+                            <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
+
             <div class="col">
-                <div class="card h-100 text-center shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Plan S/60</h5>
-                        <p class="card-text small">Para uso familiar y videollamadas.</p>
-                        <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                <a href="https://wa.me/51916206379?text=Hola%2C%20estoy%20interesado%20en%20el%20servicio%20de%20internet%20del%20plan%20S/60" target="_blank" class="text-decoration-none">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Plan S/60</h5>
+                            <p class="card-text small">Para uso familiar y videollamadas.</p>
+                            <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
+
             <div class="col">
-                <div class="card h-100 text-center shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Plan S/90</h5>
-                        <p class="card-text small">Streaming y multitarea sin interrupciones.</p>
-                        <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                <a href="https://wa.me/51916206379?text=Hola%2C%20estoy%20interesado%20en%20el%20servicio%20de%20internet%20del%20plan%20S/90" target="_blank" class="text-decoration-none">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Plan S/90</h5>
+                            <p class="card-text small">Streaming y multitarea sin interrupciones.</p>
+                            <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
+
             <div class="col">
-                <div class="card h-100 text-center shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Plan S/120</h5>
-                        <p class="card-text small">Empresas y conexiones exigentes.</p>
-                        <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                <a href="https://wa.me/51916206379?text=Hola%2C%20estoy%20interesado%20en%20el%20servicio%20de%20internet%20del%20plan%20S/120" target="_blank" class="text-decoration-none">
+                    <div class="card h-100 text-center shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Plan S/120</h5>
+                            <p class="card-text small">Empresas y conexiones exigentes.</p>
+                            <span class="badge bg-success mt-2">Primer mes GRATIS</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
+
 
         <!-- Equipos -->
         <div class="mt-4">
@@ -282,5 +296,24 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox-plus-jquery.min.js"></script>
+<%
+    List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (Modelo.ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
+
 </body>
 </html>

@@ -1,3 +1,4 @@
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -194,5 +195,24 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox-plus-jquery.min.js"></script>
+<%
+    List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (Modelo.ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
+
 </body>
 </html>

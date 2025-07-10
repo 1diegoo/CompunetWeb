@@ -1,3 +1,6 @@
+<%@ page import="Modelo.ProductoDAO, Modelo.Producto" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="es">
@@ -8,6 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="Estetica/css/estilos.css">
+    <link rel="stylesheet" href="Estetica/css/catalogo.css">
 </head>
 <body>
 
@@ -57,144 +61,106 @@
     </div>
 </nav>
 
-<!-- Vinclo ProductoID -->
-<%@ page import="Modelo.ProductoDAO, Modelo.Producto" %>
 <%
-    String idStr = request.getParameter("id");
-    Producto producto = null;
+    int id = Integer.parseInt(request.getParameter("id"));
+    ProductoDAO dao = new ProductoDAO();
+    Producto producto = dao.buscarPorId(id);
 
-    if (idStr != null) {
-        try {
-            int id = Integer.parseInt(idStr);
-            ProductoDAO dao = new ProductoDAO();
-            producto = dao.obtenerProductoPorId(id);
-        } catch (Exception e) {
-            out.println("Error al obtener producto: " + e.getMessage());
-        }
-    }
+    if (producto == null) {
+%>
+    <div class="container mt-5">
+        <div class="alert alert-danger">Producto no encontrado.</div>
+    </div>
+<%
+    } else {
+        List<Producto> relacionadosCategoria = dao.relacionadosPorCategoria(producto.getCategoria(), id);
+        List<Producto> relacionadosMarca = dao.relacionadosPorMarca(producto.getMarca(), id);
+        Producto aleatorio = dao.relacionadoAleatorio(id);
 %>
 
-<!-- Producto -->
-<div class="container py-5">
+<div class="container my-5">
     <div class="row">
-        <% if (producto != null) { %>
-        <div class="col-lg-6 text-center mb-4 mb-lg-0">
-            <img src="Estetica/img/<%= producto.getImagen() %>" class="img-fluid rounded shadow-sm" alt="<%= producto.getNombre() %>">
+        <div class="col-md-5">
+            <img src="Estetica/img/<%=producto.getImagen()%>" class="img-fluid" alt="<%=producto.getNombre()%>">
         </div>
 
-        <!-- Detalles -->
-        <div class="col-lg-6">
-            <h1 class="mb-3"><%= producto.getNombre() %></h1>
-            <p class="text-muted">SKU: PROD-<%= producto.getId() %></p>
-            <p><strong>Marca:</strong> <%= producto.getMarca() %></p>
+        <div class="col-md-7">
+            <h3><%=producto.getNombre()%></h3>
+            <p class="text-muted"><%=producto.getDescripcion()%></p>
 
-            <!-- Disponibildad -->
+            <div class="mb-3">
+                <% if (producto.getDescuento() > 0) {
+                    double precioFinal = producto.getPrecio() - (producto.getPrecio() * producto.getDescuento() / 100.0);
+                %>
+                    <h4>
+                        <span class="text-danger">S/<%=String.format("%.2f", precioFinal)%></span>
+                        <small class="text-muted text-decoration-line-through">S/<%=String.format("%.2f", producto.getPrecio())%></small>
+                        <span class="badge bg-danger">-<%=Math.round(producto.getDescuento())%>%</span>
+                    </h4>
+                <% } else { %>
+                    <h4>S/<%=String.format("%.2f", producto.getPrecio())%></h4>
+                <% } %>
+            </div>
+
+            <p><strong>Marca:</strong> <%=producto.getMarca()%></p>
+            <p><strong>Categoría:</strong> <%=producto.getCategoria()%></p>
+
             <% if (producto.getStock() == 0) { %>
-                <p><strong>Disponibilidad:</strong> <span class="text-danger">Producto Agotado</span></p>
+                <span class="badge bg-danger">Sin stock</span>
             <% } else if (producto.getStock() <= 10) { %>
-                <p><strong>Disponibilidad:</strong> <span class="text-danger">Últimas unidades (quedan <%= producto.getStock() %>)</span></p>
+                <span class="badge bg-warning text-dark">Últimas unidades</span>
             <% } else { %>
-                <p><strong>Disponibilidad:</strong> <span class="text-success">En stock</span></p>
+                <span class="badge bg-success">En stock</span>
             <% } %>
 
-            <!-- Precio -->
+            <div class="mt-4 d-flex align-items-center gap-3">
+                <label for="cantidad" class="form-label mb-0">Cantidad:</label>
+                <input type="number" id="cantidad" name="cantidad" min="1" value="1" max="<%=producto.getStock()%>" class="form-control" style="width: 80px;" <%= producto.getStock() == 0 ? "disabled" : "" %>>
+                <form action="agregarACarrito.jsp" method="get" class="d-inline">
+                    <input type="hidden" name="id" value="<%=producto.getId()%>">
+                    <input type="hidden" name="cantidad" id="inputCantidadCarrito" value="1">
+                    <button type="submit" class="btn btn-primary" id="btnAgregarPrincipal"
+                        <%= producto.getStock() == 0 ? "disabled" : "" %>>Agregar al carrito</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Productos relacionados -->
+    <div class="mt-5">
+        <h4 class="titulo-seccion">Productos relacionados</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4 mt-3">
             <%
-                double precioOriginal = producto.getPrecio();
-                double descuento = producto.getDescuento();
-                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+                for (Producto p : relacionadosCategoria) {
             %>
-            <% if (descuento > 0) { %>
-                <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
-                <h4 class="text-success fw-bold">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></h4>
-            <% } else { %>
-                <h4 class="text-success fw-bold">S/ <%= String.format("%.2f", precioOriginal) %></h4>
+            <div class="col">
+                <jsp:include page="fragmentoProducto.jsp">
+                    <jsp:param name="id" value="<%=p.getId()%>" />
+                </jsp:include>
+            </div>
             <% } %>
-            <p><%= producto.getDescripcion() %></p>
 
-            <!-- Cantidad -->
-            <div class="d-flex align-items-center mb-3">
-                <span class="me-2">Cantidad:</span>
-                <div class="input-group" style="width: 120px;">
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(-1)">-</button>
-                    <input type="text" id="cantidad" class="form-control text-center" value="1" readonly>
-                    <button class="btn btn-outline-secondary" onclick="cambiarCantidad(1)">+</button>
-                </div>
+            <%
+                for (Producto p : relacionadosMarca) {
+            %>
+            <div class="col">
+                <jsp:include page="fragmentoProducto.jsp">
+                    <jsp:param name="id" value="<%=p.getId()%>" />
+                </jsp:include>
             </div>
-
-            <!-- Botones -->
-            <div class="d-flex gap-2">
-            <% if (producto.getStock() > 0) { %>
-                <button id="btnAgregarPrincipal" class="btn btn-verde flex-fill" onclick="window.location.href='carrito.jsp'">
-                    <i class="bi bi-cart-plus me-2"></i> Agregar al carrito
-                </button>
-            <% } else { %>
-                <button class="btn btn-secondary flex-fill" disabled>
-                    <i class="bi bi-x-circle me-2"></i> Sin stock
-                </button>
             <% } %>
+
+            <% if (aleatorio != null) { %>
+            <div class="col">
+                <jsp:include page="fragmentoProducto.jsp">
+                    <jsp:param name="id" value="<%=aleatorio.getId()%>" />
+                </jsp:include>
             </div>
+            <% } %>
         </div>
-        <% } else { %>
-        <div class="col-12">
-            <div class="alert alert-danger text-center">
-                Producto no encontrado o ID inválido.
-            </div>
-        </div>
-        <% } %>
     </div>
 </div>
 
-     
-<%@ page import="java.util.*, Modelo.ProductoDAO, Modelo.Producto" %>
-<%
-    List<Producto> relacionados = new ArrayList<>();
-    if (producto != null) {
-        ProductoDAO dao = new ProductoDAO();
-        relacionados = dao.obtenerRelacionados(producto, 3);
-    }
-%>
-
-<!-- Productos Relacionados -->
-<% if (!relacionados.isEmpty()) { %>
-<div class="container mt-5 producto-relacionado">
-    <h4 class="mb-4">Productos Relacionados</h4>
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-    <% for (Producto r : relacionados) { 
-           double precioFinal = r.getPrecio() - (r.getPrecio() * r.getDescuento() / 100);
-           String etiqueta = "stock_en.png";
-           if (r.getStock() == 0) etiqueta = "stock_no.png";
-           else if (r.getStock() < 10) etiqueta = "stock_pocas.png";
-    %>
-        <div class="col">
-            <div class="card h-100 producto-card position-relative">
-                <!-- Etiqueta visual de stock -->
-                <img src="Estetica/img/<%= etiqueta %>" class="etiqueta-stock" alt="Disponibilidad">
-
-                <a href="producto.jsp?id=<%= r.getId() %>">
-                    <img src="Estetica/img/<%= r.getImagen() %>" class="card-img-top" alt="<%= r.getNombre() %>">
-                </a>
-                <div class="card-body text-center">
-                    <h5 class="card-title"><%= r.getNombre() %></h5>
-                    <% if (r.getDescuento() > 0) { %>
-                        <p class="mb-1">
-                            <span class="text-muted text-decoration-line-through small">S/ <%= r.getPrecio() %></span><br>
-                            <span class="fw-bold text-success">S/ <%= String.format("%.2f", precioFinal) %></span>
-                        </p>
-                    <% } else { %>
-                        <p class="fw-bold text-success mb-2">S/ <%= String.format("%.2f", precioFinal) %></p>
-                    <% } %>
-
-                    <% if (r.getStock() > 0) { %>
-                        <button class="btn btn-sm btn-verde" onclick="window.location.href='carrito.jsp'">Agregar al carrito</button>
-                    <% } else { %>
-                        <button class="btn btn-sm btn-secondary" disabled>Producto agotado</button>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-    <% } %>
-    </div>
-</div>
 <% } %>
 
 <!-- Footer -->
@@ -263,7 +229,7 @@ const stockDisponible = <%= producto.getStock() %>;
     const input = document.getElementById("cantidad");
     const botones = document.querySelectorAll(".input-group button");
     const botonPrincipal = document.getElementById("btnAgregarPrincipal");
-
+    
     if (stockDisponible === 0) {
         input.value = 0;
         botones.forEach(btn => btn.disabled = true);
@@ -271,7 +237,50 @@ const stockDisponible = <%= producto.getStock() %>;
             botonPrincipal.disabled = true;
         }
     }
-    };
+    
+    const campoVisible = document.getElementById("cantidad");
+    const campoOculto = document.getElementById("inputCantidadCarrito");
+
+    campoVisible.addEventListener("input", () => {
+        campoOculto.value = campoVisible.value;
+    });
+
+    }
+    ;
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.getElementById("cantidad");
+        const stockMaximo = <%= producto.getStock() %>;
+
+        input.addEventListener("input", () => {
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 1) {
+                input.value = 1;
+            } else if (val > stockMaximo) {
+                input.value = stockMaximo;
+            }
+        });
+    });
+</script>
+<%
+    List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (Modelo.ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
+
 </body>
 </html>

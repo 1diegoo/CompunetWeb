@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+/*document.addEventListener("DOMContentLoaded", function () {
 
     const grupos = document.querySelectorAll(".input-group");
 
@@ -19,4 +19,4 @@ document.addEventListener("DOMContentLoaded", function () {
             input.value = cantidad + 1;
         });
     });
-});
+});*/

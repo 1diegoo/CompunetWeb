@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,7 +19,11 @@
 
 <!-- Topbar -->
 <div class="bg-dark text-white py-1 small text-center">
-    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | Contactos: 926052866 - 900955495</div>
+    <div>Horario: Lun a Sab 8:00 AM - 6:00 PM | 
+        Contactos: 
+        <a href="https://wa.me/51926052866" target="_blank">926052866</a> - 
+        <a href="https://wa.me/51900640484" target="_blank">900640484</a>
+    </div>
 </div>
 
 <!-- Navbar -->
@@ -62,281 +67,120 @@
     </div>
 </nav>
 
-<!-- Título y Vista -->
+<!-- Título -->
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center">
         <h2 class="titulo-seccion">Catálogo de Productos</h2>
-        <div class="btn-group" role="group">
-            <button id="btnGrid" class="btn btn-outline-secondary active" onclick="cambiarVista('grid')">
-                <i class="bi bi-grid-3x3-gap-fill"></i>
-            </button>
-            <button id="btnLista" class="btn btn-outline-secondary" onclick="cambiarVista('lista')">
-                <i class="bi bi-list-ul"></i>
-            </button>
-        </div>
     </div>
 </div>
 
-<!-- Contenido -->
-<div class="container">
-    <div class="row">
-        <!-- Filtros (izquierda) -->
-        <aside class="col-lg-3 mb-4">
-            <div class="card p-3 shadow-sm">
 
-                <!-- Búsqueda -->
-                <input type="text" class="form-control mb-3" placeholder="Buscar productos...">
+<div class="container px-3 px-md-5">
+    <div class="row gx-4 gy-4">
+        
+        <!-- Sidebar de filtros -->
+        <aside class="col-md-3 px-4">
+            <h5 class="mb-3">Filtros</h5>
 
-                <!-- Categorías -->
-                <h6 class="fw-bold mb-2">Categorías</h6>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Computadoras Armadas" id="cat1">
-                    <label class="form-check-label" for="cat1">Computadoras Armadas</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Laptops" id="cat2">
-                    <label class="form-check-label" for="cat2">Laptops</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Tablets" id="cat3">
-                    <label class="form-check-label" for="cat3">Tablets</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Impresoras" id="cat4">
-                    <label class="form-check-label" for="cat4">Impresoras</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Tintas" id="cat5">
-                    <label class="form-check-label" for="cat5">Tintas</label>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="SSD" id="cat6">
-                    <label class="form-check-label" for="cat6">SSD</label>
-                </div>
-                <div class="form-check mb-3">
-                    <input type="checkbox" class="form-check-input filtro-checkbox" data-tipo="categoria" value="Combos Gamer" id="cat7">
-                    <label class="form-check-label" for="cat7">Combos Gamer</label>
-                </div>
+            <!-- Buscador -->
+            <div class="mb-3">
+                <input type="search" id="filtro-nombre" class="form-control" placeholder="Buscar por nombre...">
+            </div>
 
-                <!-- Marcas -->
-                <h6 class="fw-bold mb-2">Marca</h6>
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <img src="Estetica/img/logo-lenovo.png" class="marca-filtro" data-tipo="marca" data-valor="Lenovo" alt="Lenovo">
-                    <img src="Estetica/img/logo-hp.png" class="marca-filtro" data-tipo="marca" data-valor="HP" alt="HP">
-                    <img src="Estetica/img/logo-epson.png" class="marca-filtro" data-tipo="marca" data-valor="Epson" alt="Epson">
-                    <img src="Estetica/img/logo-canon.png" class="marca-filtro" data-tipo="marca" data-valor="Canon" alt="Canon">
-                    <img src="Estetica/img/logo-gigabyte.png" class="marca-filtro" data-tipo="marca" data-valor="Gigabyte" alt="Gigabyte">
-                    <img src="Estetica/img/logo-pny.png" class="marca-filtro" data-tipo="marca" data-valor="PNY" alt="PNY">
-                    <img src="Estetica/img/logo-kingston.png" class="marca-filtro" data-tipo="marca" data-valor="Kingston" alt="Kingston">
-                    <img src="Estetica/img/logo-advance.png" class="marca-filtro" data-tipo="marca" data-valor="Advance" alt="Advance">
-                    <img src="Estetica/img/logo-teamgroup.png" class="marca-filtro" data-tipo="marca" data-valor="TeamGroup" alt="TeamGroup">
-                    <img src="Estetica/img/logo-acer.png" class="marca-filtro" data-tipo="marca" data-valor="Acer" alt="Acer">
-                    <img src="Estetica/img/logo-wd.png" class="marca-filtro" data-tipo="marca" data-valor="WD" alt="WD">
-                    <img src="Estetica/img/logo-brother.png" class="marca-filtro" data-tipo="marca" data-valor="Brother" alt="Brother">
-                    <img src="Estetica/img/logo-bienex.jpg" class="marca-filtro" data-tipo="marca" data-valor="Bienex" alt="Bienex">
+            <!-- Categorías -->
+            <div class="mb-3">
+                <h6>Categorías</h6>
+                <div id="filtro-categorias" class="form-check">
+                    <div><input class="form-check-input" type="checkbox" value="Laptops" id="cat1"> <label class="form-check-label" for="cat1">Laptops</label></div>
+                    <div><input class="form-check-input" type="checkbox" value="SSD" id="cat2"> <label class="form-check-label" for="cat2">SSD</label></div>
+                    <div><input class="form-check-input" type="checkbox" value="Impresoras" id="cat3"> <label class="form-check-label" for="cat3">Impresoras</label></div>
+                    <div><input class="form-check-input" type="checkbox" value="Tablets" id="cat4"> <label class="form-check-label" for="cat4">Tablets</label></div>
+                    <div><input class="form-check-input" type="checkbox" value="Tintas" id="cat5"> <label class="form-check-label" for="cat5">Tintas</label></div>
+                    <div><input class="form-check-input" type="checkbox" value="Combos Gamer" id="cat6"> <label class="form-check-label" for="cat6">Combos Gamer</label></div>
                 </div>
+            </div>
 
-                <!-- Rango de precio -->
-                <h6 class="fw-bold mb-2">Precio Máximo</h6>
-                <label class="form-label">Hasta: S/<span id="rangoValor">3000</span></label>
-                <input type="range" class="form-range" min="100" max="3000" value="3000" id="rangoPrecio" oninput="actualizarRango(this.value)">
+            <!-- Marcas -->
+            <div class="mb-3">
+                <h6>Marcas</h6>
+                <div id="filtro-marcas" class="d-flex flex-wrap gap-2">
+                    <img src="Estetica/img/logo-lenovo.png" alt="Lenovo" class="marca-logo filtro-marca" data-marca="Lenovo">
+                    <img src="Estetica/img/logo-hp.png" alt="HP" class="marca-logo filtro-marca" data-marca="HP">
+                    <img src="Estetica/img/logo-advance.png" alt="Advance" class="marca-logo filtro-marca" data-marca="Advance">
+                    <img src="Estetica/img/logo-canon.png" alt="Canon" class="marca-logo filtro-marca" data-marca="Canon">
+                    <img src="Estetica/img/logo-epson.png" alt="Epson" class="marca-logo filtro-marca" data-marca="Epson">
+                    <img src="Estetica/img/logo-kingston.png" alt="Kingston" class="marca-logo filtro-marca" data-marca="Kingston">
+                    <img src="Estetica/img/logo-gigabyte.png" alt="Gigabyte" class="marca-logo filtro-marca" data-marca="Gigabyte">
+                    <img src="Estetica/img/logo-pny.png" alt="PNY" class="marca-logo filtro-marca" data-marca="PNY">
+                    <img src="Estetica/img/logo-acer.png" alt="Acer" class="marca-logo filtro-marca" data-marca="Acer">
+                </div>
+            </div>
 
-                <!-- Limpiar filtros -->
-                <button class="btn btn-outline-secondary btn-sm mt-3 w-100" onclick="limpiarTodosFiltros()">Limpiar filtros</button>
+            <!-- Rango de precios -->
+            <div class="mb-3">
+                <h6>Precio</h6>
+                <div id="filtro-precios">
+                    <div><input type="radio" name="precio" value="0-100"> Hasta S/100</div>
+                    <div><input type="radio" name="precio" value="100-250"> S/100 a S/250</div>
+                    <div><input type="radio" name="precio" value="250-500"> S/250 a S/500</div>
+                    <div><input type="radio" name="precio" value="500-1000"> S/500 a S/1000</div>
+                    <div><input type="radio" name="precio" value="1000-2000"> S/1000 a S/2000</div>
+                    <div><input type="radio" name="precio" value="2000-3000"> S/2000 a S/3000</div>
+                    <div><input type="radio" name="precio" value="3000-99999"> S/3000 a más</div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button class="btn btn-outline-danger btn-sm" id="limpiar-filtros">Limpiar filtros</button>
             </div>
         </aside>
 
-        <!-- Productos -->
-        <section class="col-lg-9">
-            
-                <!-- Filtros activos y contador -->
-            <div id="contenedor-filtros-activos" class="mb-3">
-                <div id="filtros-activos" class="d-flex flex-wrap align-items-center gap-2"></div>
-                <div id="contador-productos" class="mt-2 small text-muted"></div>
+        <!-- Catálogo dinámico -->
+        <section class="col-md-9">
+            <div id="chips-activos" class="mb-3 d-flex flex-wrap gap-2">
             </div>
-            
-            <%@ page import="java.util.*, Modelo.ProductoDAO, Modelo.Producto" %>
-            <%
-                int productosPorPagina = 12;
-                int paginaActual = 1;
-
-                String paginaParam = request.getParameter("pagina");
-                if (paginaParam != null) {
-                    try {
-                        paginaActual = Integer.parseInt(paginaParam);
-                    } catch (NumberFormatException e) {
-                        paginaActual = 1;
-                    }
-                }
-
-                int offset = (paginaActual - 1) * productosPorPagina;
-                ProductoDAO dao = new ProductoDAO();
-                List<Producto> productos = dao.listarPorPagina(offset, productosPorPagina);
-
-                int totalProductos = dao.contarProductos();
-                int totalPaginas = (int) Math.ceil((double) totalProductos / productosPorPagina);
-            %>
-            
-            <!-- Vista Cuadrícula -->
-            <div id="vistaGrid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-            <% for (Producto p : productos) { %>
-                <div class="col">
-                    <div class="card producto-card h-100 position-relative">
-                        
-                        <!-- Etiqueta stock -->
-                        <%
-                            String imagenStock = "";
-                            if (p.getStock() > 10) {
-                                imagenStock = "stock_en.png";
-                            } else if (p.getStock() > 0) {
-                                imagenStock = "stock_pocas.png";
-                            } else {
-                                imagenStock = "stock_no.png";
-                            }
-                        %>
-                        <img src="Estetica/img/<%= imagenStock %>" class="etiqueta-stock" alt="Estado de stock">
-
-                        <a href="producto.jsp?id=<%= p.getId() %>">
-                            <img src="Estetica/img/<%= p.getImagen() %>" class="card-img-top" alt="<%= p.getNombre() %>">
-                        </a>
-                        <div class="card-body">
-                            <a href="producto.jsp?id=<%= p.getId() %>" class="text-decoration-none text-dark">
-                                <h5 class="card-title"><%= p.getNombre() %></h5>
-                            </a>
-                            <p class="card-text"><%= p.getDescripcion() %></p>
-                            <%
-                                double precioOriginal = p.getPrecio();
-                                double descuento = p.getDescuento();
-                                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
-                            %>
-                            <% if (descuento > 0) { %>
-                                <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
-                                <div class="fw-bold text-primary mb-2">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></div>
-                            <% } else { %>
-                                <div class="fw-bold text-primary mb-2">S/ <%= String.format("%.2f", precioOriginal) %></div>
-                            <% } %>
-                            
-                            <!-- Botón Agregar carrito -->
-                            <% if (p.getStock() > 0) { %>
-                                <button class="btn btn-verde w-100" onclick="window.location.href='carrito.jsp'">
-                                    Agregar al carrito
-                                </button>
-                            <% } else { %>
-                                <button class="btn btn-secondary w-100" disabled>
-                                    Producto agotado
-                                </button>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-            <% } %>
+            <div id="contenedor-productos" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             </div>
-
-            <!-- Vista Lista -->
-            <div id="vistaLista" class="d-none">
-                <% for (Producto p : productos) { %>
-                <div class="card mb-4 producto-card position-relative">
-                
-                <!-- Etiqueta stock -->
-                <%
-                    String imagenStockLista = "";
-                    if (p.getStock() > 10) {
-                        imagenStockLista = "stock_en.png";
-                    } else if (p.getStock() > 0) {
-                        imagenStockLista = "stock_pocas.png";
-                    } else {
-                        imagenStockLista = "stock_no.png";
-                    }
-                %>
-                <img src="Estetica/img/<%= imagenStockLista %>" class="etiqueta-stock-lista" alt="Estado de stock">
-
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <a href="producto.jsp?id=<%= p.getId() %>">
-                                <img src="Estetica/img/<%= p.getImagen() %>" class="img-fluid rounded-start" alt="<%= p.getNombre() %>">
-                            </a>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <a href="producto.jsp?id=<%= p.getId() %>" class="text-decoration-none text-dark">
-                                    <h5 class="card-title"><%= p.getNombre() %></h5>
-                                </a>
-                                <p class="card-text"><%= p.getDescripcion() %></p>
-                                <%
-                                    double precioOriginal = p.getPrecio();
-                                    double descuento = p.getDescuento();
-                                    double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
-                                %>
-                                <% if (descuento > 0) { %>
-                                    <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
-                                    <div class="fw-bold text-primary mb-3">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></div>
-                                <% } else { %>
-                                    <div class="fw-bold text-primary mb-3">S/ <%= String.format("%.2f", precioOriginal) %></div>
-                                <% } %>
-                                <button class="btn btn-verde" onclick="window.location.href='carrito.jsp'">
-                                    Agregar al carrito
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <% } %>
-            </div>
-
             <!-- Paginación -->
-            <nav aria-label="Paginación del catálogo" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item <%= (paginaActual == 1) ? "disabled" : "" %>">
-                        <a class="page-link" href="catalogo.jsp?pagina=<%= paginaActual - 1 %>">Anterior</a>
-                    </li>
-
-                    <% for (int i = 1; i <= totalPaginas; i++) { %>
-                        <li class="page-item <%= (i == paginaActual) ? "active" : "" %>">
-                            <a class="page-link" href="catalogo.jsp?pagina=<%= i %>"><%= i %></a>
-                        </li>
-                    <% } %>
-
-                    <li class="page-item <%= (paginaActual == totalPaginas) ? "disabled" : "" %>">
-                        <a class="page-link" href="catalogo.jsp?pagina=<%= paginaActual + 1 %>">Siguiente</a>
-                    </li>
-                </ul>
+            <nav class="mt-4 d-flex justify-content-center" id="paginacion">
             </nav>
         </section>
     </div>
 </div>
 
+
 <!-- Footer -->
 <footer class="footer-compunet text-white pt-4 mt-5">
     <div class="container">
         <div class="row text-center text-md-start">
-            <!-- Columna izquierda: Información de contacto -->
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5>Local Principal Tienda Imperial</h5>
                 <p class="mb-2">
-                    <a href="contactenos.jsp" class="footer-link">
-                        <i class="bi bi-geo-alt-fill me-2"></i>
-                        Jr. 2 de Mayo N° 475 - Imperial<br>
-                        (a 1/2 cuadra Plaza Armas)
-                    </a>
+                    <i class="bi bi-geo-alt-fill me-2"></i>
+                        <a href="https://www.google.com/maps?q=Jr.+2+de+Mayo+475,+Imperial,+Cañete,+Perú" target="_blank" class="footer-link">
+                            Jr. 2 de Mayo N° 475 - Imperial
+                        </a>
                 </p>
+
                 <p>
-                    <a href="#" class="footer-link">
-                        <i class="bi bi-whatsapp me-2"></i>
-                        926052866 - 900955495
-                    </a>
+                    <i class="bi bi-whatsapp me-2"></i>
+                    <a href="https://wa.me/51926052866" target="_blank" class="footer-link">92052866</a> - 
+                    <a href="https://wa.me/51900955495" target="_blank" class="footer-link">900955495</a>
                 </p>
             </div>
 
-            <!-- Columna central: Redes sociales -->
             <div class="col-md-4 mb-4 mb-md-0 d-flex flex-column align-items-center">
                 <h5>Síguenos</h5>
                 <div class="d-flex gap-3">
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white fs-4 social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="https://www.facebook.com/wcompunec" class="footer-icon" target="_blank" >
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/compunetcanete/" class="footer-icon" target="_blank" >
+                        <i class="bi bi-instagram"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- Columna derecha: Libro de reclamaciones -->
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
                 <a href="#" class="reclamaciones-link d-inline-block mt-2">
@@ -344,11 +188,9 @@
                 </a>
             </div>
         </div>
-
         <hr class="footer-divider">
-
         <div class="text-center pt-2">
-            <small class="footer-copyright">Copyright &copy; 2017-2024 COMPUNET. Todos los derechos reservados.</small>
+            <small class="text-light">Copyright © 2017-2024 COMPUNET. Todos los derechos reservados.</small>
         </div>
     </div>
 </footer>
@@ -356,5 +198,23 @@
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="Estetica/js/catalogo.js"></script>
+<%
+    List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (Modelo.ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
 </body>
 </html>

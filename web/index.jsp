@@ -102,45 +102,38 @@
                         <%
                             for (int j = i; j < i + 4 && j < destacados.size(); j++) {
                                 Producto p = destacados.get(j);
-                                double precioOriginal = p.getPrecio();
-                                double descuento = p.getDescuento();
-                                double precioFinal = precioOriginal - (precioOriginal * descuento / 100);
+                                double precioFinal = p.getPrecio() - (p.getPrecio() * p.getDescuento() / 100);
+                                boolean conDescuento = p.getDescuento() > 0;
                         %>
                         <div class="col-md-3">
-                            <div class="card h-100 position-relative producto-card">
-                                <%
-                                    String etiquetaStock = "";
-                                    if (p.getStock() > 10) {
-                                        etiquetaStock = "stock_en.png";
-                                    } else if (p.getStock() > 0) {
-                                        etiquetaStock = "stock_pocas.png";
-                                    } else {
-                                        etiquetaStock = "stock_no.png";
-                                    }
-                                %>
-                                <img src="Estetica/img/<%= etiquetaStock %>" class="etiqueta-stock" alt="Stock">
+                            <div class="card h-100">
                                 <a href="producto.jsp?id=<%= p.getId() %>">
                                     <img src="Estetica/img/<%= p.getImagen() %>" class="card-img-top" alt="<%= p.getNombre() %>">
                                 </a>
-                                <div class="card-body text-center">
-                                    <h5 class="card-title"><%= p.getNombre() %></h5>
-                                    <p class="card-text"><%= p.getDescripcion() %></p>
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title mb-1">
+                                        <a href="producto.jsp?id=<%= p.getId() %>" class="text-decoration-none text-dark">
+                                            <%= p.getNombre() %>
+                                        </a>
+                                    </h6>
+                                    <p class="text-muted small mb-2"><%= p.getDescripcion() %></p>
                                     
-                                    <% if (descuento > 0) { %>
-                                        <p class="mb-1 text-muted text-decoration-line-through">S/ <%= String.format("%.2f", precioOriginal) %></p>
-                                        <p class="fw-bold text-primary">S/ <%= String.format("%.2f", precioFinal) %> <small class="text-danger">(-<%= (int) descuento %>%)</small></p>
-                                    <% } else { %>
-                                        <p class="fw-bold text-primary">S/ <%= String.format("%.2f", precioOriginal) %></p>
-                                    <% } %>
+                                    <div class="mb-2">
+                                        <% if (conDescuento) { %>
+                                            <span class="text-danger fw-bold">S/<%= String.format("%.2f", precioFinal) %></span>
+                                            <span class="text-muted text-decoration-line-through small">S/<%= String.format("%.2f", p.getPrecio()) %></span>
+                                            <span class="badge bg-danger ms-1">-<%= Math.round(p.getDescuento()) %>%</span>
+                                        <% } else { %>
+                                            <span class="fw-bold">S/<%= String.format("%.2f", p.getPrecio()) %></span>
+                                        <% } %>
+                                    </div>
 
-                                    <% if (p.getStock() > 0) { %>
-                                        <button class="btn btn-sm btn-verde w-100" onclick="window.location.href='carrito.jsp'">
-                                            Agregar al carrito
-                                        </button>
+                                    <% if (p.getStock() == 0) { %>
+                                        <span class="badge bg-danger mt-auto">Sin stock</span>
+                                    <% } else if (p.getStock() <= 10) { %>
+                                        <span class="badge bg-warning text-dark mt-auto">Últimas unidades</span>
                                     <% } else { %>
-                                        <button class="btn btn-sm btn-secondary w-100" disabled>
-                                            Sin stock
-                                        </button>
+                                        <span class="badge bg-success mt-auto">En stock</span>
                                     <% } %>
                                 </div>
                             </div>
@@ -167,28 +160,36 @@
         <h3 class="mb-4">Categorías</h3>
         <div class="row g-4">
             <div class="col-md-3">
-                <div class="card h-100 text-center p-3">
-                    <i class="bi bi-laptop display-4 mb-2"></i>
-                    <h5>PCs y Laptops</h5>
-                </div>
+                <a href="catalogo.jsp?categoria=PCs y Laptops" class="text-decoration-none text-dark">
+                    <div class="card h-100 text-center p-3">
+                        <i class="bi bi-laptop display-4 mb-2"></i>
+                        <h5>PCs y Laptops</h5>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card h-100 text-center p-3">
-                    <i class="bi bi-hdd display-4 mb-2"></i>
-                    <h5>SSDs</h5>
-                </div>
+                <a href="catalogo.jsp?categoria=SSD" class="text-decoration-none text-dark">
+                    <div class="card h-100 text-center p-3">
+                        <i class="bi bi-hdd display-4 mb-2"></i>
+                        <h5>SSDs</h5>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card h-100 text-center p-3">
-                    <i class="bi bi-router display-4 mb-2"></i>
-                    <h5>Internet Ilimitado</h5>
-                </div>
+                <a href="servicios.jsp" class="text-decoration-none text-dark">
+                    <div class="card h-100 text-center p-3">
+                        <i class="bi bi-router display-4 mb-2"></i>
+                        <h5>Internet Ilimitado</h5>
+                    </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card h-100 text-center p-3">
-                    <i class="bi bi-printer display-4 mb-2"></i>
-                    <h5>Impresoras</h5>
-                </div>
+                <a href="catalogo.jsp?categoria=Impresoras" class="text-decoration-none text-dark">
+                    <div class="card h-100 text-center p-3">
+                        <i class="bi bi-printer display-4 mb-2"></i>
+                        <h5>Impresoras</h5>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -223,19 +224,29 @@
         <h4 class="mb-4">Nuestras Marcas</h4>
         <div class="row justify-content-center">
             <div class="col-4 col-md-2 mb-3">
-                <img src="Estetica/img/logo-lenovo.png" class="logo-marca" alt="Lenovo">
+                <a href="catalogo.jsp?marca=Lenovo">
+                    <img src="Estetica/img/logo-lenovo.png" class="logo-marca" alt="Lenovo">
+                </a>
             </div>
             <div class="col-4 col-md-2 mb-3">
-                <img src="Estetica/img/logo-hp.png" class="logo-marca" alt="HP">
+                <a href="catalogo.jsp?marca=HP">
+                    <img src="Estetica/img/logo-hp.png" class="logo-marca" alt="HP">
+                </a>
             </div>
             <div class="col-4 col-md-2 mb-3">
-                <img src="Estetica/img/logo-epson.png" class="logo-marca" alt="Epson">
+                <a href="catalogo.jsp?marca=Epson">
+                    <img src="Estetica/img/logo-epson.png" class="logo-marca" alt="Epson">
+                </a>
             </div>
             <div class="col-4 col-md-2 mb-3">
-                <img src="Estetica/img/logo-gigabyte.png" class="logo-marca" alt="Gigabyte">
+                <a href="catalogo.jsp?marca=Gigabyte">
+                    <img src="Estetica/img/logo-gigabyte.png" class="logo-marca" alt="Gigabyte">
+                </a>
             </div>
             <div class="col-4 col-md-2 mb-3">
-                <img src="Estetica/img/logo-canon.png" class="logo-marca" alt="Canon">
+                <a href="catalogo.jsp?marca=Canon">
+                    <img src="Estetica/img/logo-canon.png" class="logo-marca" alt="Canon">
+                </a>
             </div>
         </div>
     </div>
@@ -289,5 +300,25 @@
 
 <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<%
+    List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
+    int totalCantidad = 0;
+
+    if (carrito != null) {
+        for (Modelo.ItemCarrito item : carrito) {
+            totalCantidad += item.getCantidad();
+        }
+    }
+%>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const contador = document.getElementById('cartCount');
+        if (contador) {
+            contador.textContent = '<%= totalCantidad %>';
+        }
+    });
+</script>
+
 </body>
 </html>

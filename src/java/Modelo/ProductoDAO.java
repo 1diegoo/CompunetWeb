@@ -2,26 +2,41 @@ package Modelo;
 
 import Utilidades.Conexion;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ProductoDAO {
 
-    Connection con;
-    PreparedStatement ps;
-    ResultSet rs;
-
-    // Listar todos los productos
-    public List<Producto> listarProductos() {
+    public List<Producto> listarPorFiltros(String nombre, String categoria, List<String> marcas,
+                                           double precioMin, double precioMax, int pagina, int productosPorPagina) {
         List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM productos";
+        String sql = "SELECT * FROM productos WHERE 1=1";
 
-        try {
-            con = new Conexion().getConexion();
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
+        if (!nombre.isEmpty()) sql += " AND nombre LIKE ?";
+        if (!categoria.isEmpty()) sql += " AND categoria = ?";
+        if (marcas != null && !marcas.isEmpty()) {
+            String marcasIn = String.join(",", Collections.nCopies(marcas.size(), "?"));
+            sql += " AND marca IN (" + marcasIn + ")";
+        }
+        sql += " AND precio BETWEEN ? AND ?";
+        sql += " ORDER BY nombre ASC LIMIT ? OFFSET ?";
 
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            int index = 1;
+
+            if (!nombre.isEmpty()) ps.setString(index++, "%" + nombre + "%");
+            if (!categoria.isEmpty()) ps.setString(index++, categoria);
+            if (marcas != null && !marcas.isEmpty()) {
+                for (String m : marcas) ps.setString(index++, m);
+            }
+
+            ps.setDouble(index++, precioMin);
+            ps.setDouble(index++, precioMax);
+            ps.setInt(index++, productosPorPagina);
+            ps.setInt(index++, (pagina - 1) * productosPorPagina);
+
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Producto p = new Producto();
                 p.setId(rs.getInt("id"));
@@ -29,185 +44,191 @@ public class ProductoDAO {
                 p.setDescripcion(rs.getString("descripcion"));
                 p.setPrecio(rs.getDouble("precio"));
                 p.setImagen(rs.getString("imagen"));
-                p.setMarca(rs.getString("marca"));
+                p.setCategoria(rs.getString("categoria"));
                 p.setStock(rs.getInt("stock"));
+                p.setMarca(rs.getString("marca"));
                 p.setDescuento(rs.getDouble("descuento"));
-                p.setCategoria(rs.getString("categoria")); // 👈 categoría
                 lista.add(p);
             }
         } catch (Exception e) {
-            System.out.println("Error al listar productos: " + e.getMessage());
+            System.err.println("Error listarPorFiltros: " + e.getMessage());
         }
 
         return lista;
     }
 
-    // Obtener un producto por su ID
-    public Producto obtenerProductoPorId(int id) {
-        Producto producto = null;
-        String sql = "SELECT * FROM productos WHERE id = ?";
+    public int contarPorFiltros(String nombre, String categoria, List<String> marcas,
+                                double precioMin, double precioMax) {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM productos WHERE 1=1";
 
-        try {
-            con = new Conexion().getConexion();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            rs = ps.executeQuery();
+        if (!nombre.isEmpty()) sql += " AND nombre LIKE ?";
+        if (!categoria.isEmpty()) sql += " AND categoria = ?";
+        if (marcas != null && !marcas.isEmpty()) {
+            String marcasIn = String.join(",", Collections.nCopies(marcas.size(), "?"));
+            sql += " AND marca IN (" + marcasIn + ")";
+        }
+        sql += " AND precio BETWEEN ? AND ?";
 
+        try (Connection con = Conexion.getConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            int index = 1;
+
+            if (!nombre.isEmpty()) ps.setString(index++, "%" + nombre + "%");
+            if (!categoria.isEmpty()) ps.setString(index++, categoria);
+            if (marcas != null && !marcas.isEmpty()) {
+                for (String m : marcas) ps.setString(index++, m);
+            }
+
+            ps.setDouble(index++, precioMin);
+            ps.setDouble(index++, precioMax);
+
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                producto = new Producto();
-                producto.setId(rs.getInt("id"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setDescripcion(rs.getString("descripcion"));
-                producto.setPrecio(rs.getDouble("precio"));
-                producto.setImagen(rs.getString("imagen"));
-                producto.setMarca(rs.getString("marca"));
-                producto.setStock(rs.getInt("stock"));
-                producto.setDescuento(rs.getDouble("descuento"));
-                producto.setCategoria(rs.getString("categoria")); // 👈 categoría
-            }
-        } catch (Exception e) {
-            System.out.println("Error al obtener producto por ID: " + e.getMessage());
-        }
-
-        return producto;
-    }
-
-    // Obtener productos relacionados
-    public List<Producto> obtenerRelacionados(Producto base, int limite) {
-        List<Producto> relacionados = new ArrayList<>();
-
-        try {
-            con = new Conexion().getConexion();
-
-            // Producto RElacionado Por marca
-            String sqlMarca = "SELECT * FROM productos WHERE marca = ? AND id != ?";
-            ps = con.prepareStatement(sqlMarca);
-            ps.setString(1, base.getMarca());
-            ps.setInt(2, base.getId());
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                relacionados.add(crearProductoDesdeRS(rs));
-            }
-
-            // Producto por categoría
-            String sqlCategoria = "SELECT * FROM productos WHERE categoria = ? AND id != ?";
-            ps = con.prepareStatement(sqlCategoria);
-            ps.setString(1, base.getCategoria());
-            ps.setInt(2, base.getId());
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                relacionados.add(crearProductoDesdeRS(rs));
-            }
-
-            // Producto  Al azar
-            String sqlAzar = "SELECT * FROM productos WHERE id != ? ORDER BY RAND() LIMIT ?";
-            ps = con.prepareStatement(sqlAzar);
-            ps.setInt(1, base.getId());
-            ps.setInt(2, limite);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                relacionados.add(crearProductoDesdeRS(rs));
-            }
-
-            // Mezclar y limitar resultados
-            Collections.shuffle(relacionados);
-            if (relacionados.size() > limite) {
-                relacionados = relacionados.subList(0, limite);
+                total = rs.getInt(1);
             }
 
         } catch (Exception e) {
-            System.out.println("Error al obtener productos relacionados: " + e.getMessage());
+            System.err.println("Error contarPorFiltros: " + e.getMessage());
         }
 
-        return relacionados;
+        return total;
     }
 
-    private Producto crearProductoDesdeRS(ResultSet rs) throws SQLException {
-        Producto p = new Producto();
-        p.setId(rs.getInt("id"));
-        p.setNombre(rs.getString("nombre"));
-        p.setDescripcion(rs.getString("descripcion"));
-        p.setPrecio(rs.getDouble("precio"));
-        p.setImagen(rs.getString("imagen"));
-        p.setMarca(rs.getString("marca"));
-        p.setStock(rs.getInt("stock"));
-        p.setDescuento(rs.getDouble("descuento"));
-        p.setCategoria(rs.getString("categoria"));
-        return p;
+public Producto buscarPorId(int id) {
+    Producto p = null;
+    String sql = "SELECT * FROM productos WHERE id = ?";
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setPrecio(rs.getDouble("precio"));
+            p.setImagen(rs.getString("imagen"));
+            p.setCategoria(rs.getString("categoria"));
+            p.setStock(rs.getInt("stock"));
+            p.setMarca(rs.getString("marca"));
+            p.setDescuento(rs.getDouble("descuento"));
+        }
+    } catch (Exception e) {
+        System.err.println("Error buscarPorId: " + e.getMessage());
     }
+    return p;
+}
 
-    public List<Producto> listarPorPagina(int offset, int cantidad) {
-        List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM productos LIMIT ?, ?";
+public List<Producto> relacionadosPorCategoria(String categoria, int excluirId) {
+    List<Producto> lista = new ArrayList<>();
+    String sql = "SELECT * FROM productos WHERE categoria = ? AND id != ? LIMIT 1";
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, categoria);
+        ps.setInt(2, excluirId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Producto p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setPrecio(rs.getDouble("precio"));
+            p.setImagen(rs.getString("imagen"));
+            p.setCategoria(rs.getString("categoria"));
+            p.setStock(rs.getInt("stock"));
+            p.setMarca(rs.getString("marca"));
+            p.setDescuento(rs.getDouble("descuento"));
+            lista.add(p);
+        }
+    } catch (Exception e) {
+        System.err.println("Error relacionadosPorCategoria: " + e.getMessage());
+    }
+    return lista;
+}
 
-        try {
-            con = new Conexion().getConexion();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, offset);
-            ps.setInt(2, cantidad);
-            rs = ps.executeQuery();
+public List<Producto> relacionadosPorMarca(String marca, int excluirId) {
+    List<Producto> lista = new ArrayList<>();
+    String sql = "SELECT * FROM productos WHERE marca = ? AND id != ? LIMIT 1";
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setString(1, marca);
+        ps.setInt(2, excluirId);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Producto p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setPrecio(rs.getDouble("precio"));
+            p.setImagen(rs.getString("imagen"));
+            p.setCategoria(rs.getString("categoria"));
+            p.setStock(rs.getInt("stock"));
+            p.setMarca(rs.getString("marca"));
+            p.setDescuento(rs.getDouble("descuento"));
+            lista.add(p);
+        }
+    } catch (Exception e) {
+        System.err.println("Error relacionadosPorMarca: " + e.getMessage());
+    }
+    return lista;
+}
 
-            while (rs.next()) {
-                Producto p = new Producto();
-                p.setId(rs.getInt("id"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setPrecio(rs.getDouble("precio"));
-                p.setImagen(rs.getString("imagen"));
-                p.setMarca(rs.getString("marca"));
-                p.setStock(rs.getInt("stock"));
-                p.setDescuento(rs.getDouble("descuento"));
-                p.setCategoria(rs.getString("categoria"));
-                lista.add(p);
-            }
-        } catch (Exception e) {
-            System.out.println("Error al paginar productos: " + e.getMessage());
+public Producto relacionadoAleatorio(int excluirId) {
+    Producto p = null;
+    String sql = "SELECT * FROM productos WHERE id != ? ORDER BY RAND() LIMIT 1";
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, excluirId);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setPrecio(rs.getDouble("precio"));
+            p.setImagen(rs.getString("imagen"));
+            p.setCategoria(rs.getString("categoria"));
+            p.setStock(rs.getInt("stock"));
+            p.setMarca(rs.getString("marca"));
+            p.setDescuento(rs.getDouble("descuento"));
+        }
+    } catch (Exception e) {
+        System.err.println("Error relacionadoAleatorio: " + e.getMessage());
+    }
+    return p;
+}
+
+public List<Producto> obtenerProductosDestacados(int cantidad) {
+    List<Producto> lista = new ArrayList<>();
+    String sql = "SELECT * FROM productos WHERE stock > 0 ORDER BY nombre ASC LIMIT ?";
+
+    try (Connection con = Conexion.getConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, cantidad);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Producto p = new Producto();
+            p.setId(rs.getInt("id"));
+            p.setNombre(rs.getString("nombre"));
+            p.setDescripcion(rs.getString("descripcion"));
+            p.setPrecio(rs.getDouble("precio"));
+            p.setImagen(rs.getString("imagen"));
+            p.setCategoria(rs.getString("categoria"));
+            p.setStock(rs.getInt("stock"));
+            p.setMarca(rs.getString("marca"));
+            p.setDescuento(rs.getDouble("descuento"));
+            lista.add(p);
         }
 
-        return lista;
+    } catch (Exception e) {
+        System.err.println("Error en obtenerProductosDestacados: " + e.getMessage());
     }
 
-    public int contarProductos() {
-        String sql = "SELECT COUNT(*) FROM productos";
-        try {
-            con = new Conexion().getConexion();
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt(1);
-        } catch (Exception e) {
-            System.out.println("Error al contar productos: " + e.getMessage());
-        }
-        return 0;
-    }
-    
-    public List<Producto> obtenerProductosDestacados(int cantidad) {
-        List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM productos WHERE stock > 0 ORDER BY RAND() LIMIT ?";
-
-        try {
-            con = new Conexion().getConexion();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, cantidad);
-            rs = ps.executeQuery();
-
-            while (rs.next()) {
-                Producto p = new Producto();
-                p.setId(rs.getInt("id"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setPrecio(rs.getDouble("precio"));
-                p.setImagen(rs.getString("imagen"));
-                p.setCategoria(rs.getString("categoria"));
-                p.setStock(rs.getInt("stock"));
-                p.setMarca(rs.getString("marca"));
-                p.setDescuento(rs.getDouble("descuento"));
-                lista.add(p);
-            }
-        } catch (Exception e) {
-            System.out.println("Error en productos destacados: " + e.getMessage());
-        }
-
-        return lista;
-    }
+    return lista;
+}
 
 }

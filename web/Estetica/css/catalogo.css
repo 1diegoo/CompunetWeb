@@ -1,4 +1,11 @@
-/* Vista del catálogo */
+:root {
+    --verde-compunet: #AED136;
+    --verde-hover: #98b72b;
+    --negro: #000000;
+    --gris-claro: #F4F4F4;
+    --blanco: #FFFFFF;
+}
+
 .titulo-seccion {
     border-left: 5px solid var(--verde-compunet);
     padding-left: 10px;
@@ -6,96 +13,150 @@
     color: var(--negro);
 }
 
-/* Tarjetas de productos cUAdricualada y Lista */
-.producto-card {
-    border: 1px solid #e0e0e0;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.producto-card:hover {
-    box-shadow: 0 0 10px rgba(174, 209, 54, 0.4);
-    transform: translateY(-3px);
-}
-
-/* Imagen de producto */
-.card-img-top,
-.vista-lista img {
-    height: 200px;
-    object-fit: contain;
-    background-color: #fff;
-    padding: 10px;
+aside {
+    background-color: var(--blanco);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* Etiquetas sobre el producto */
-.etiqueta-stock {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 90px;
-    height: auto;
-}
-.etiqueta-stock-lista {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 120px;
-    height: auto;
-    z-index: 1;
+aside h5 {
+    font-weight: bold;
+    margin-bottom: 1rem;
 }
 
-/* Estilo de logos como filtro */
-.marca-filtro {
+aside h6 {
+    margin-top: 1.2rem;
+    font-weight: bold;
+}
+
+aside input[type="text"],
+aside input[type="search"] {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.form-check-label {
+    font-size: 0.9rem;
+}
+
+.filtro-marca {
     height: 40px;
-    width: auto;
     max-width: 80px;
     object-fit: contain;
     opacity: 0.6;
     filter: grayscale(100%);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    box-sizing: border-box;
-    display: inline-block;
+    border-radius: 5px;
     padding: 3px;
+    background-color: #fff;
 }
 
-/* Hover visual sin mover su espacio */
-.marca-filtro:hover,
-.marca-filtro.seleccionado {
+.filtro-marca.activa {
     filter: none;
     opacity: 1;
     border: 2px solid var(--verde-compunet);
-    border-radius: 5px;
     transform: scale(1.05);
 }
 
-/* Filtros y buscador */
-aside .form-check-label {
-    font-size: 0.9rem;
-}
-aside input[type="range"] {
-    width: 100%;
-}
-aside select,
-aside input[type="text"] {
-    font-size: 0.9rem;
+#chips-activos {
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
-/* Botones de cambio de vista */
-.btn-group .btn {
-    border-color: var(--verde-compunet);
-}
-.btn-group .btn.active {
+.chip-filtro {
     background-color: var(--verde-compunet);
-    color: #000;
+    color: var(--negro);
+    padding: 6px 12px;
+    border-radius: 25px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* Producto sin stock*/
-.btn[disabled] {
+.card {
+    border: 1px solid #e0e0e0;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0 10px rgba(174, 209, 54, 0.4);
+    transform: translateY(-3px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #fff;
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card-body .text-muted {
+    font-size: 0.85rem;
+}
+
+.card .badge {
+    font-size: 0.75rem;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+    color: #333 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.card .btn-primary {
+    background-color: var(--verde-compunet);
+    border: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.card .btn-primary:hover {
+    background-color: var(--verde-hover);
+}
+
+.card .btn[disabled] {
     background-color: #ccc;
     color: #666;
     cursor: not-allowed;
 }
 
-/* Paginación activa */
+#limpiar-filtros {
+    background-color: transparent;
+    color: var(--negro);
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    border-radius: 25px;
+    transition: 0.2s;
+}
+
+#limpiar-filtros:hover {
+    background-color: var(--verde-compunet);
+    border-color: var(--verde-hover);
+}
+
 .pagination .page-link {
     color: var(--negro);
 }
@@ -105,7 +166,28 @@ aside input[type="text"] {
     color: var(--negro);
 }
 
-/* RESPONSIVO Paginación */
+aside {
+    margin-bottom: 20px;
+}
+
+#contenedor-productos {
+    margin-top: 10px;
+}
+
+.chip-filtro .btn-close {
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    font-size: 0.65rem;
+    padding: 2px;
+    border-radius: 50%;
+    transition: opacity 0.2s ease;
+}
+
+.chip-filtro .btn-close:hover {
+    opacity: 1;
+}
+
+/*  RESPONSIVO  */
 @media (max-width: 576px) {
     .pagination {
         flex-wrap: wrap;
@@ -123,31 +205,3 @@ aside input[type="text"] {
         padding: 0.3rem 0.6rem;
     }
 }
-
-/* Chips de filtros activos */
-.filtro-chip {
-    background-color: var(--verde-compunet);
-    color: var(--negro);
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.filtro-chip button {
-    background: none;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    line-height: 1;
-}
-.filtro-chip button:hover {
-    color: red;
-}
-
-#contenedor-filtros-activos {
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-}
-
