@@ -183,7 +183,7 @@
 
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
-                <a href="#" class="reclamaciones-link d-inline-block mt-2">
+                <a href="reclamaciones.jsp" class="reclamaciones-link d-inline-block mt-2">
                     <img src="Estetica/img/icon-reclamaciones.png" alt="Libro de Reclamaciones" class="reclamaciones-icon">
                 </a>
             </div>

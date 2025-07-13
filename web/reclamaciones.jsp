@@ -1,5 +1,22 @@
-<%@ page import="java.util.List, Modelo.ItemCarrito" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="Modelo.ReclamacionDAO, Modelo.Reclamacion" %>
+<%@ page import="java.util.List, Modelo.ItemCarrito" %>
+<%
+    String exito = null;
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        Reclamacion r = new Reclamacion();
+        r.setNombre  (request.getParameter("nombre"));
+        r.setDni     (request.getParameter("dni"));
+        r.setCorreo  (request.getParameter("correo"));
+        r.setTelefono(request.getParameter("telefono"));
+        r.setTema    (request.getParameter("tema"));
+        r.setDetalle (request.getParameter("detalle"));
+
+        boolean ok = new ReclamacionDAO().insertarReclamacion(r);
+        exito = ok ? "Reclamo enviado correctamente. ¡Gracias!"
+                   : "Hubo un problema, intente de nuevo.";
+    }
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,9 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/css/lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="Estetica/css/estilos.css">
-    <link rel="stylesheet" href="Estetica/css/nosotros.css">
 </head>
 <body>
 
@@ -64,86 +79,78 @@
     </div>
 </nav>
 
-<!-- Cuerpo -->
-<div class="container py-5">
-    <h2 class="titulo-seccion mb-5">Nosotros</h2>
+<body class="bg-light">
 
-    <!-- Misión y Visión -->
-    <section class="mb-5">
-        <div class="row g-4">
+<div class="container my-5">
+    <h2 class="mb-4">Libro de Reclamaciones</h2>
+
+    <% if (exito != null) { %>
+        <div class="alert <%= exito.startsWith("Reclamo") ? "alert-success" : "alert-danger" %>">
+            <%= exito %>
+        </div>
+    <% } %>
+
+    <%-- Formulario --%>
+    <form method="post" class="bg-white p-4 shadow-sm rounded needs-validation" novalidate>
+        <div class="row g-3">
+
             <div class="col-md-6">
-                <div class="card p-4 h-100 border-0 sombra-verde">
-                    <h5 class="mb-3">Misión</h5>
-                    <p>Ofrecer productos y servicios tecnológicos de calidad, accesibles para todos los peruanos, con atención personalizada y soporte técnico confiable.</p>
-                </div>
+                <label class="form-label">Nombre y Apellidos</label>
+                <input type="text" name="nombre" class="form-control"
+                       required
+                       pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]{2,60}"
+                       onkeypress="return soloLetras(event)">
+                <div class="invalid-feedback">Escriba solo letras (2‑60 caracteres).</div>
             </div>
+
+            <div class="col-md-3">
+                <label class="form-label">DNI</label>
+                <input type="text" name="dni" class="form-control"
+                       required pattern="[0-9]{8}" inputmode="numeric"
+                       maxlength="8"
+                       onkeypress="return soloNumeros(event)">
+                <div class="invalid-feedback">Ingrese 8 dígitos.</div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Teléfono</label>
+                <input type="text" name="telefono" class="form-control"
+                       required pattern="[0-9]{9}" inputmode="numeric"
+                       maxlength="9"
+                       onkeypress="return soloNumeros(event)">
+                <div class="invalid-feedback">Ingrese 9 dígitos.</div>
+            </div>
+
             <div class="col-md-6">
-                <div class="card p-4 h-100 border-0 sombra-verde">
-                    <h5 class="mb-3">Visión</h5>
-                    <p>Ser la empresa líder en tecnología en el sur del país, reconocida por su innovación, responsabilidad y compromiso con el cliente.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Filosofía / frases -->
-    <section class="mb-5">
-        <div class="row text-center">
-            <div class="col-md-6 mb-3">
-                <div class="frase-box p-4 shadow-sm rounded">
-                    <h5 class="mb-2">Tecnología al alcance de todos</h5>
-                    <p class="small text-muted">Brindamos soluciones accesibles sin comprometer calidad.</p>
-                </div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <div class="frase-box p-4 shadow-sm rounded">
-                    <h5 class="mb-2">Comprometidos con tu confianza</h5>
-                    <p class="small text-muted">Nuestro mayor logro es tu recomendación.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Galería de imágenes generales (clientes, tienda, productos) -->
-    <section>
-        <h4 class="subtitulo-seccion d-flex align-items-center mb-4">
-            <span class="barra-verde me-2"></span> 
-            <span>Galería de Nuestra Historia</span>
-        </h4>
-        <div class="row g-3 galeria-nosotros">
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria1.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria1.webp" class="nosotros-img mb-2" alt="Galería 1">
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria2.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria2.webp" class="nosotros-img mb-2" alt="Galería 2">
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria3.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria3.webp" class="nosotros-img mb-2" alt="Galería 3">
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria4.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria4.webp" class="nosotros-img mb-2" alt="Galería 4">
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria5.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria5.webp" class="nosotros-img mb-2" alt="Galería 5">
-                </a>
-            </div>
-            <div class="col-sm-6 col-md-4">
-                <a href="Estetica/img/galeria6.webp" data-lightbox="galeria">
-                    <img src="Estetica/img/galeria6.webp" class="nosotros-img mb-2" alt="Galería 6">
-                </a>
+                <label class="form-label">Correo electrónico</label>
+                <input type="email" name="correo" class="form-control" required>
+                <div class="invalid-feedback">Ingrese un correo válido.</div>
             </div>
 
+            <div class="col-md-6">
+                <label class="form-label">Tema principal</label>
+                <select name="tema" class="form-select" required>
+                    <option value="">Seleccione…</option>
+                    <option>Producto</option>
+                    <option>Servicio Técnico</option>
+                    <option>Cámaras de Seguridad</option>
+                    <option>Internet</option>
+                    <option>Problemas con la tienda en línea</option>
+                    <option>Otros</option>
+                </select>
+                <div class="invalid-feedback">Seleccione un tema.</div>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Información extra del reclamo</label>
+                <textarea name="detalle" class="form-control" rows="5"
+                          required minlength="10"></textarea>
+                <div class="invalid-feedback">Describa su reclamo (mínimo 10 caracteres).</div>
+            </div>
         </div>
-    </section>
+
+        <button class="btn btn-primary mt-4">Enviar Reclamo</button>
+    </form>
 </div>
 
 <!-- Footer -->
@@ -192,9 +199,8 @@
     </div>
 </footer>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.4/dist/js/lightbox-plus-jquery.min.js"></script>
+
 <%
     List<Modelo.ItemCarrito> carrito = (List<Modelo.ItemCarrito>) session.getAttribute("carrito");
     int totalCantidad = 0;
@@ -205,7 +211,33 @@
         }
     }
 %>
+
 <script>
+  /* Evitar números en “Nombre” */
+  function soloLetras(e){
+      const key = e.key;
+      return /^[A-Za-zÁÉÍÓÚáéíóúÑñ ]$/.test(key) || key === "Backspace";
+  }
+
+  function soloNumeros(e){
+    const key = e.key;
+    return /^[0-9]$/.test(key) || key === 'Backspace';
+  }
+  
+  /* Bootstrap 5: impedir envío si hay campos inválidos */
+  (() => {
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', e => {
+        if (!form.checkValidity()) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  })();
+
     document.addEventListener('DOMContentLoaded', function () {
         const contador = document.getElementById('cartCount');
         if (contador) {
@@ -213,6 +245,5 @@
         }
     });
 </script>
-
 </body>
 </html>

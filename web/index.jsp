@@ -160,7 +160,7 @@
         <h3 class="mb-4">Categorías</h3>
         <div class="row g-4">
             <div class="col-md-3">
-                <a href="catalogo.jsp?categoria=PCs y Laptops" class="text-decoration-none text-dark">
+                <a href="catalogo.jsp?categoria=Laptops" class="text-decoration-none text-dark">
                     <div class="card h-100 text-center p-3">
                         <i class="bi bi-laptop display-4 mb-2"></i>
                         <h5>PCs y Laptops</h5>
@@ -286,7 +286,7 @@
 
             <div class="col-md-4 text-md-end text-center">
                 <h5>Libro de Reclamaciones</h5>
-                <a href="#" class="reclamaciones-link d-inline-block mt-2">
+                <a href="reclamaciones.jsp" class="reclamaciones-link d-inline-block mt-2">
                     <img src="Estetica/img/icon-reclamaciones.png" alt="Libro de Reclamaciones" class="reclamaciones-icon">
                 </a>
             </div>
